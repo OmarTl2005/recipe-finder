@@ -19,8 +19,9 @@ const Register = () => {
             const response = await axios.post('http://localhost:5000/register', {
             'username': username,
             'email': email,
-            'password': password
-        })
+            'password': password,
+            headers: { 'Content-Type': 'application/json' }
+        }, { withCredentials: true })
 
         console.log(response.data.message)
         if (response.data.message) {

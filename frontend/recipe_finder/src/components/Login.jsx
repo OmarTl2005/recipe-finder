@@ -15,9 +15,10 @@ const Login = () => {
         e.preventDefault();
         try {
             const response = await axios.post('http://localhost:5000/login', {
-            'email': email,
-            'password': password
-        })
+              'email': email,
+              'password': password
+            }, {withCredentials: true});
+        
 
         console.log(response.data.message)
         setSuccess(response.data.message)
@@ -41,7 +42,7 @@ const Login = () => {
 
   return (
     <>
-      <form onSubmit={handleSubmit} className='w-screen h-screen flex-col flex items-center justify-center gap-4'>
+      <form method='POST' onSubmit={handleSubmit} className='w-screen h-screen flex-col flex items-center justify-center gap-4'>
         {
           showError ? 
           <div className='bg-red-500 text-white p-2 rounded absolute top-3 w-[30%] flex transition-all duration-200'>

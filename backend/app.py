@@ -10,7 +10,10 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///recipe.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'supersecretkey'
-CORS(app, origins=['*'])
+app.config['SESSION_COOKIE_SECURE'] = True
+app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
+
+CORS(app, origins=['http://localhost:3000'], supports_credentials=True)
 
 db = SQLAlchemy(app)
 
@@ -68,7 +71,7 @@ def register():
     
     return jsonify({'message': 'User registrated successfully'}), 200
 
-@app.route('/login', methods=['GET', 'POST', 'OPTIONS'])
+@app.route('/login', methods=['POST'])
 def login():
     if current_user.is_authenticated:
         return jsonify({'message': 'User already loged in'}), 200
@@ -86,11 +89,14 @@ def login():
 
     return jsonify({'message': 'Login successful'}), 200
 
-@app.route('/logout', methods=['POST'])
-@login_required
+@app.route('/logout')
 def logout():
-    logout_user()
-    return jsonify({'message': 'Logout successful'}), 200
+    if current_user.is_authenticated:
+        logout_user()
+        return jsonify({'message': 'User loged out'}), 200
+    else:
+        return jsonify({'error': 'User already loged out'}), 401
+
 
 
 if __name__ == '__main__':
