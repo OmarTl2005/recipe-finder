@@ -2,24 +2,26 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" href="%PUBLIC_URL%/" />
+    <link rel="icon" href="%PUBLIC_URL%/recipe-finder.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
     <meta
-      name="description"
-      content="Web site created using create-react-app"
+      name="Recipe Finder"
+      content="Recipe Finder is a web application that allows users to discover, save, and share delicious recipes. With an intuitive interface and powerful search capabilities, users can easily find recipes based on ingredients, cuisine type, or dietary restrictions. Additionally, users can create personalized recipe collections, write reviews, and interact with other users in a community-driven platform."
     />
-    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
-    <!--
-      manifest.json provides metadata used when your web app is installed on a
-      user's mobile device or desktop. See https://developers.google.com/web/fundamentals/web-app-manifest/
-    -->
-    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
-
-    <title>React App</title>
+    <title>Recipe Finder</title>
+    <script type="text/javascript">
+      (function(l) {
+        if (l.search[1] === '/' ) {
+          var decoded = l.search.slice(1).split('&').map(function(s) { 
+            return s.replace(/~and~/g, '&')
+          }).join('?');
+          window.history.replaceState(null, null,
+              l.pathname.slice(0, -1) + decoded + l.hash
+          );
+        }
+      }(window.location))
+    </script>
   </head>
-  <body >
-    <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
+  <body id="root">
   </body>
 </html>

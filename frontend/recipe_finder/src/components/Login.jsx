@@ -23,6 +23,9 @@ const Login = () => {
         console.log(response.data.message)
         setSuccess(response.data.message)
         setShowSuccess(true)
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000)
         } catch(error) {
             console.error('Error logging in:', error.response.data.error)
             if (error.response.data.error) {
@@ -42,11 +45,11 @@ const Login = () => {
 
   return (
     <>
-      <form method='POST' onSubmit={handleSubmit} className='w-screen h-screen flex-col flex items-center justify-center gap-4'>
+      <form method='POST' onSubmit={handleSubmit} className='w-full h-full flex-col flex items-center justify-center gap-4'>
         {
           showError ? 
           <div className='bg-red-500 text-white p-2 rounded absolute top-3 w-[30%] flex transition-all duration-200'>
-              <p className='w-[90%]'>{error}!</p>
+              <p className='w-[90%]'>{error}</p>
               <button onClick={handleErrorDismiss} className='bg-red-300 px-2 py-1 rounded text-white'><AiFillCloseCircle /></button>
           </div>
           : null
@@ -54,7 +57,7 @@ const Login = () => {
         {
           showSuccess ? 
           <div className='bg-green-600 text-white p-2 rounded absolute top-3 w-[20%] flex transition-all duration-200'>
-              <p className='w-[90%]'>{success}!</p>
+              <p className='w-[90%]'>{success}</p>
               <button onClick={handleSuccess} className='bg-green-300 px-2 py-1 rounded text-white'><AiFillCloseCircle /></button>
           </div>
           : null
