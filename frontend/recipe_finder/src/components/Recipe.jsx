@@ -41,11 +41,13 @@ const Recipe = () => {
             {recipe.title}
           </h1>
           <div className='flex justify-between items-center w-full mt-12'>
-            <div className='w-1/2 flex items-center justify-center'>
+            <div className='w-1/2 flex flex-col items-center justify-center'>
               <p className='text-center w-[80%] font-bitter'>{recipe.description}</p>
+              <p className='text-center w-[80%] font-bitter'>{recipe.content}</p>
             </div>
             <div className='w-1/2 flex flex-col items-center gap-5 justify-center'>
               <img alt='recipe' className='rounded-3xl h-[400px] w-[400px]' src={`http://localhost:5000/uploads/${recipe.filename}`}></img>
+              <h1 className='text-xl font-madimi'>Cuisine: {recipe.cuisine}</h1>
               <div className='flex'>
                 {
                     [...Array(5)].map((star, index) => {
