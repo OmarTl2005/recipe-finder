@@ -47,19 +47,27 @@ const Main = () => {
 
   const handleFavorite = async (recipeId) => {
     try {
-      const response = await axios.get(`http://localhost:5000/favorite/${recipeId}`, { withCredentials: true });
-      if (response.data === 'true') {
-        setFavorite(true);
-      }
-
-      if (response.data === 'false') {
-        setFavorite(false);
-      }
-
+      setFavorite(prevFavorite => !prevFavorite); // Update favorite state immediately
+  
+      const updatedRecipes = recipes.map(recipe => {
+        if (recipe.id === recipeId) {
+          return { ...recipe, favorite: !recipe.favorite }; // Update local favorite status immediately
+        }
+        return recipe;
+      });
+  
+      setRecipes(updatedRecipes); // Update local state immediately
+  
+      const response = await axios.put(`http://localhost:5000/favorite/${recipeId}`, {
+        is_favorite: favorite ? 'true' : 'false' // Use previous state to determine value
+      }, { withCredentials: true });
+  
+      console.log(response.data.message);
     } catch (error) {
-      console.error('Error favoriting recipe:', error);
+      console.error('Error updating favorite status:', error.response?.data?.error || error.message);
     }
   }
+  
 
   return (
     <div className='flex flex-col items-center justify-between h-full w-[80%] self-center'>

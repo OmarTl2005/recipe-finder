@@ -230,7 +230,7 @@ def delete_recipe(recipe_id):
 
   return jsonify({'error': 'Method not allowed'}), 405 
 
-@app.route('/favorite/<recipe_id>', methods=['PUT', 'GET'])
+@app.route('/favorite/<recipe_id>', methods=['PUT'])
 @login_required
 def favorite(recipe_id):
     try:
