@@ -6,6 +6,7 @@ import Nav from "./components/Nav";
 import Main from "./components/Main";
 import MakeRecipe from "./components/MakeRecipe";
 import ShowRecipe from "./components/ShowRecipe";
+import Recipe from "./components/Recipe";
 
 function App() {
   return (
@@ -19,7 +20,7 @@ function App() {
           <Route path="/logout" element={<Logout />} />
           <Route path="/make-recipe" element={<MakeRecipe />} />
           <Route path="/my-recipes" element={<ShowRecipe />} />
-          <Route path="/recipe/<id>" element={<Recipe />} />
+          <Route path="/recipe/:id" element={<Recipe />} />
         </Routes>
       </BrowserRouter>
     </div>

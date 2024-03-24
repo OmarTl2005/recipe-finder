@@ -257,6 +257,21 @@ def favorite(recipe_id):
     except:
         return jsonify({'error': 'something went wrong'}), 500
 
+@app.route('/recipe/<id>')
+def recipe(id):
+    try:
+        recipes = Recipe.query.filter_by(id=id).all()
+        return jsonify([{'id': recipe.id,
+                         'title': recipe.title,
+                         'description': recipe.description,
+                         'cuisine': recipe.cuisine,
+                         'favorite': recipe.favorite,
+                         'filename': f'{recipe.filename}'} for recipe in recipes]), 200
+    except:
+        return jsonify({'error': 'An error occurred while fetching recipes'}), 500
+
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
