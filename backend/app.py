@@ -133,6 +133,7 @@ def recipes():
                          'title': recipe.title,
                          'description': recipe.description,
                          'cuisine': recipe.cuisine,
+                         'favorite': recipe.favorite,
                          'filename': f'{recipe.filename}'} for recipe in recipes]), 200
     except:
         return jsonify({'error': 'An error occurred while fetching recipes'}), 500
