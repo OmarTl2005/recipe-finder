@@ -74,14 +74,16 @@ const Main = () => {
       {filteredRecipes.length > 0 ? (
         <ul className='flex text-center justify-center flex-wrap w-full h-full gap-[100px] max-h-[100px]'>
           {filteredRecipes.map((recipe) => (
-            <li className='flex flex-col relative justify-center gap-1 isolate aspect-video shadow-white shadow-3xl p-8 rounded-[17%] bg-gradient-to-b from-blue-300/30' key={recipe.id}>
-              <button onClick={() => handleFavorite(recipe.id)}>
-                {recipe.favorite ? <GoHeartFill className='text-red-600 text-[32px] absolute top-5 left-5 transition-all duration-200 ease-in-out' /> : <GoHeart className='transition-all duration-200 ease-in-out text-red-600 text-[32px] absolute top-5 left-5' />}
-              </button>
-              <img className='rounded-full' width='200px' height='200px' src={`http://localhost:5000/uploads/${recipe.filename}`} alt={recipe.title} />
-              <h1 className='mt-5'>{recipe.title}</h1>
-              <p>{recipe.description}</p>
-            </li>
+            <a>
+              <li className='flex flex-col relative justify-center gap-1 isolate aspect-video shadow-white shadow-3xl p-8 rounded-[17%] bg-gradient-to-b from-blue-300/30' key={recipe.id}>
+                <button onClick={() => handleFavorite(recipe.id)}>
+                  {recipe.favorite ? <GoHeartFill className='text-red-600 text-[32px] absolute top-5 left-5 transition-all duration-200 ease-in-out' /> : <GoHeart className='transition-all duration-200 ease-in-out text-red-600 text-[32px] absolute top-5 left-5' />}
+                </button>
+                <img className='rounded-full' width='200px' height='200px' src={`http://localhost:5000/uploads/${recipe.filename}`} alt={recipe.title} />
+                <h1 className='mt-5'>{recipe.title}</h1>
+                <p>{recipe.description}</p>
+              </li>
+            </a>
           ))}
         </ul>
       ) : (

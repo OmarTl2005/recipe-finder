@@ -9,7 +9,6 @@ const ShowRecipe = () => {
   const [search, setSearch] = useState('');
   const [close, setClose] = useState(false);
   const [select, setSelect] = useState(null);
-  const [favorite, setFavorite] = useState(null);
 
 
   useEffect(() => {
@@ -64,22 +63,24 @@ const ShowRecipe = () => {
 
   const handleFavorite = async (recipeId) => {
     try {
-      setFavorite(prevFavorite => !prevFavorite); // Update favorite state immediately
-  
-      const updatedRecipes = recipes.map(recipe => {
-        if (recipe.id === recipeId) {
-          return { ...recipe, favorite: !recipe.favorite }; // Update local favorite status immediately
-        }
-        return recipe;
+      setRecipes(prevRecipes => {
+        const updatedRecipes = prevRecipes.map(recipe => {
+          if (recipe.id === recipeId) {
+            return { ...recipe, favorite: !recipe.favorite };
+          }
+          return recipe;
+        });
+        return updatedRecipes;
       });
   
-      setRecipes(updatedRecipes); // Update local state immediately
+      const updatedRecipe = recipes.find(recipe => recipe.id === recipeId);
+      const isFavorite = updatedRecipe.favorite;
   
-      const response = await axios.put(`http://localhost:5000/favorite/${recipeId}`, {
-        is_favorite: favorite ? 'true' : 'false' // Use previous state to determine value
+      await axios.put(`http://localhost:5000/favorite/${recipeId}`, {
+        is_favorite: !isFavorite ? 'true' : 'false'
       }, { withCredentials: true });
   
-      console.log(response.data.message);
+      console.log('Favorite status updated successfully');
     } catch (error) {
       console.error('Error updating favorite status:', error.response?.data?.error || error.message);
     }
