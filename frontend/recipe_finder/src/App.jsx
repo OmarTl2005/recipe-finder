@@ -19,6 +19,7 @@ function App() {
           <Route path="/logout" element={<Logout />} />
           <Route path="/make-recipe" element={<MakeRecipe />} />
           <Route path="/my-recipes" element={<ShowRecipe />} />
+          <Route path="/recipe/<id>" element={<Recipe />} />
         </Routes>
       </BrowserRouter>
     </div>
