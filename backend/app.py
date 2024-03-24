@@ -128,7 +128,8 @@ def recipes():
         recipes = Recipe.query.filter_by(user_id=current_user.id).all()
         return jsonify([{'id': recipe.id,
                          'title': recipe.title,
-                         'description': recipe.description, 
+                         'description': recipe.description,
+                         'cuisine': recipe.cuisine,
                          'filename': f'{recipe.filename}'} for recipe in recipes]), 200
     except:
         return jsonify({'error': 'An error occurred while fetching recipes'}), 500

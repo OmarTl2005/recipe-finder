@@ -41,7 +41,7 @@ const Main = () => {
         ) : (
           <p>Loading recipes...</p>
         )}
-      <Filter search={search} setSearch={setSearch} close={close} setClose={setClose} />
+      <Filter search={search} setSearch={setSearch} close={close} setClose={setClose} cuizine={recipes.cuizine} />
     </div>
   )
 }
