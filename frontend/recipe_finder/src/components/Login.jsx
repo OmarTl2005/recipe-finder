@@ -1,6 +1,7 @@
 import axios from 'axios'
 import { useState } from 'react'
 import { AiFillCloseCircle } from "react-icons/ai";
+import { useNavigate } from 'react-router-dom';
 
 
 const Login = () => {
@@ -10,6 +11,7 @@ const Login = () => {
     const [showError, setShowError] = useState(false)
     const [success, setSuccess] = useState(null)
     const [showSuccess, setShowSuccess] = useState(false)
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -24,6 +26,7 @@ const Login = () => {
         setSuccess(response.data.message)
         setShowSuccess(true)
         setTimeout(() => {
+          navigate('/');
           window.location.reload();
         }, 1000)
         } catch(error) {
