@@ -1,7 +1,7 @@
 import React from 'react';
 import { FaArrowUp, FaArrowDown } from "react-icons/fa";
 
-const Filter = ({ search, setSearch, close, setClose }) => {
+const Filter = ({ setSelect, search, setSearch, close, setClose, cuisine }) => {
   const handleClose = () => {
     setClose(!close);
   };
@@ -22,11 +22,18 @@ const Filter = ({ search, setSearch, close, setClose }) => {
           onChange={(e) => setSearch(e.target.value)}
           className='rounded-lg p-1 text-black h-[40%]'
         />
-        <input
-          type="dropdown"
-          placeholder='Choose cuisine'
-          className='p-1 rounded-lg h-[40%]'
-        />
+        <select 
+          placeholder='Select cuizine'
+          onChange={(e) => setSelect(e.target.value)}
+          className='rounded-lg p-1 text-black h-[40%] w-[13%]'
+        >
+          <option value=''>Select cuisine</option>
+          {cuisine.map((cuisine) => (
+            <option key={cuisine} value={cuisine}>
+              {cuisine}
+            </option>
+          ))}
+        </select>
       </div>
     </div>
   );

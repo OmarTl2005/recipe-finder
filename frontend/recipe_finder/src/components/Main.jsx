@@ -6,6 +6,9 @@ const Main = () => {
   const [recipes, setRecipes] = useState([]);
   const [search, setSearch] = useState('');
   const [close, setClose] = useState(false);
+  const [select, setSelect] = useState(null);
+  const cuisine = [...new Set(recipes.map((recipe) => recipe.cuisine))];
+  console.log(cuisine);
 
 
   useEffect(() => {
@@ -41,7 +44,7 @@ const Main = () => {
         ) : (
           <p>Loading recipes...</p>
         )}
-      <Filter search={search} setSearch={setSearch} close={close} setClose={setClose} cuizine={recipes.cuizine} />
+      <Filter select={select} setSelect={setSelect} search={search} setSearch={setSearch} close={close} setClose={setClose} cuisine={cuisine} />
     </div>
   )
 }
