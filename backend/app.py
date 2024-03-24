@@ -275,6 +275,7 @@ def recipe(id):
         return jsonify([{'id': recipe.id,
                          'title': recipe.title,
                          'description': recipe.description,
+                         'content': recipe.content,
                          'rating': recipe.rating,
                          'cuisine': recipe.cuisine,
                          'filename': f'{recipe.filename}'} for recipe in recipes]), 200
