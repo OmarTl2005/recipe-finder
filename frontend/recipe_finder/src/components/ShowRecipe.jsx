@@ -98,7 +98,6 @@ const ShowRecipe = () => {
                 </button>
                 <img className='rounded-full' width='200px' height='200px' src={`http://localhost:5000/uploads/${recipe.filename}`} alt={recipe.title} />
                 <h1 className='mt-5'>{recipe.title}</h1>
-                <p>{recipe.description}</p>
                 <button className='bg-gradient-to-tr from-lightBlue to-darkBlue rounded-full self-center py-2 px-3' onClick={() => handleDeleteRecipe(recipe.id)}>Delete recipe</button>
               </li>
             </a>

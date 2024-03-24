@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import { AiFillCloseCircle } from "react-icons/ai";
 import { FaPlusSquare, FaWindowClose } from "react-icons/fa";
@@ -14,33 +14,37 @@ const MakeRecipe = () => {
   const [showSuccess, setShowSuccess] = useState(false);
   const [content, setContent] = useState('');
   const [ingredients, setIngredients] = useState([""]); // State for ingredients
-  const [num, setNum] = useState(1); // State for counting the number of ingredient inputs
-  console.log(ingredients)
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const formData = new FormData(); // Create a FormData object for file upload
-    formData.append('title', title);
-    formData.append('description', description);
-    formData.append('cuisine', cuisine);
-    formData.append('content', content);
-    formData.append('file', file); 
-    formData.append('ingredients', JSON.stringify(ingredients)); // Add ingredients to formData
-
     try {
+      const formData = new FormData(); // Create a FormData object for file upload
+      formData.append('title', title);
+      formData.append('description', description);
+      formData.append('cuisine', cuisine);
+      formData.append('content', content);
+      formData.append('file', file);
+
+      // Send recipe data to make-recipe route
       const response = await axios.post('http://localhost:5000/make-recipe', formData, {
         withCredentials: true,
         headers: {
           'Content-Type': 'multipart/form-data', // Add this header
         },
       });
-      console.log(response.data.message);
-      setSuccess(response.data.message);
+
+      // Extract the recipe ID from the response
+      const recipeId = response.data.recipeId;
+      console.log(recipeId)
+      // Send each ingredient to add-ingredient route
+      for (const ingredient of ingredients) {
+        await axios.post('http://localhost:5000/add-ingredient', { ingredient, recipeId }, {withCredentials: true});
+      }
+
+      // Show success message
+      setSuccess('Recipe submitted successfully');
       setShowSuccess(true);
-      setTimeout(() => {
-        window.location.reload();
-      }, 1000);
+      
     } catch (error) {
       console.error(error.response.data.error);
       if (error.response.data.error) {
@@ -60,7 +64,6 @@ const MakeRecipe = () => {
 
   const handleAddIngredient = () => {
     setIngredients([...ingredients, ""]); // Add a new empty ingredient
-    setNum(num + 1); // Increment the counter
   };
 
   const handleChangeIngredient = (index, value) => {
@@ -70,14 +73,15 @@ const MakeRecipe = () => {
   };
 
   const handleRemoveIngredient = (index) => {
-    const newIngredients = [...ingredients];
-    newIngredients.splice(index, 1); // Remove the ingredient at the specified index
-    setIngredients(newIngredients);
-    setNum(num - 1); // Decrement the counter
+    if (ingredients.length > 1) {
+      const newIngredients = [...ingredients];
+      newIngredients.splice(index, 1); // Remove the ingredient at the specified index
+      setIngredients(newIngredients);
+    }
   };
 
   return (
-    <form className='w-full h-screen flex-col flex items-center justify-center gap-4 ' method='POST' onSubmit={handleSubmit}>
+    <form className='w-full h-auto flex-col flex items-center justify-center gap-4 mb-[40px]' method='POST' onSubmit={handleSubmit}>
       {showError ? (
         <div className='bg-red-500 text-white p-2 rounded absolute top-3 w-[30%] flex transition-all duration-200'>
           <p className='w-[90%]'>{error}!</p>
@@ -110,20 +114,21 @@ const MakeRecipe = () => {
             value={description}
             onChange={(e) => setDescription(e.target.value)}
             required
-            className='border-2 border-blue-300/80 rounded p-2 w-[80%] h-[10%] text-center bg-gray-200'
+            className='border-2 border-blue-300/80 rounded p-2 w-[80%] h-[70px] text-center bg-gray-200'
           />
           <textarea
             name='content'
-            placeholder='Content'
+            placeholder='Instructions'
             type='text'
             value={content}
             onChange={(e) => setContent(e.target.value)}
             required
-            className='border-2 border-blue-300/80 rounded p-2 w-[80%] h-[90%] text-center flex bg-gray-200'
+            className='border-2 border-blue-300/80 rounded p-2 w-[80%] h-[350px] text-center flex bg-gray-200'
           />
         </div>
         <div className='flex flex-col w-1/2 items-center justify-center gap-6 '>
-          <input            name='file'
+          <input
+            name='file'
             type='file'
             onChange={(e) => setFile(e.target.files[0])}
             required
@@ -135,20 +140,20 @@ const MakeRecipe = () => {
             type='text'
             value={cuisine}
             onChange={(e) => setCuisine(e.target.value)}
-            required  
+            required
             className='border-2 border-blue-300/80 rounded p-2 w-[60%] text-center bg-gray-200'
           />
         </div>
       </div>
-      <div className='w-[80%] self-center flex flex-col items-center h-[200px] z-10'>
+      <div className='w-[80%] h-auto self-center flex flex-col items-center z-10 text-black gap-2'>
         {ingredients.map((ingredient, index) => (
           <div key={index} className="w-[80%] h-full flex items-center justify-center gap-2">
-            <button onClick={handleAddIngredient}><FaPlusSquare className='text-2xl' /></button>
+            <button onClick={handleAddIngredient}><FaPlusSquare className='text-2xl text-white' /></button>
             <input
               placeholder='Ingredient'
               type='text'
               value={ingredient}
-              onChange={(e) => handleChangeIngredient(index, e.target.value) }
+              onChange={(e) => handleChangeIngredient(index, e.target.value)}
               required
               className='border-2 border-blue-300/80 rounded p-2 w-[60%] text-center bg-gray-200'
             />
@@ -160,7 +165,7 @@ const MakeRecipe = () => {
         Submit Recipe
       </button>
     </form>
-  );
-};
-
-export default MakeRecipe;
+    );
+  };
+  
+  export default MakeRecipe;

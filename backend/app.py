@@ -210,7 +210,7 @@ def make_recipe():
                 # ... (save new_recipe to database)
                 db.session.add(new_recipe)
                 db.session.commit()
-                return jsonify({'message': 'Recipe created successfully!'}), 200
+                return jsonify({'message': 'Recipe created successfully!', 'recipeId': new_recipe.id}), 200
             else:
                 return jsonify({'error': 'No file uploaded!'}), 400  # Bad request
         except:
@@ -305,6 +305,20 @@ def rate_recipe(recipe_id):
   except:
     return jsonify({'message': 'Error submitting rating'}), 500
 
+
+@app.route('/add-ingredient', methods=['POST'])
+@login_required
+def add_ingredient():
+    try:
+        data = request.json
+        ingredient = data.get('ingredient')
+        recipe_id = data.get('recipeId')
+        new_ingredient = ingredients(ingredient=ingredient, recipe_id=recipe_id)
+        db.session.add(new_ingredient)
+        db.session.commit()
+        return jsonify({'message': 'Ingredient added successfully'}), 200
+    except:
+        return jsonify({'error': 'An error occurred while adding the ingredient'}), 500
 
 
 if __name__ == '__main__':
