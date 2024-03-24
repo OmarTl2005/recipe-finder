@@ -285,23 +285,22 @@ def recipe(id):
 def rate_recipe(recipe_id):
   try:
     # Get request data
-    rating_data = request.json
-    rating = rating_data.get('rating')
+    data = request.json
+    rating = data.get('rating')
 
     if not rating:
       return jsonify({'message': 'Missing rating data'}), 400
 
     # Find the recipe by ID
-    recipe = Recipe.query.get(recipe_id)
+    recipe = Recipe.query.filter_by(id=recipe_id).first()
     if not recipe:
       return jsonify({'message': 'Recipe not found'}), 404
 
     # Create a new Rating record
-    new_rating = Rating(recipe_id=recipe_id, rating=rating)
-    db.session.add(new_rating)
+    recipe.rating = rating
     db.session.commit()
 
-    return jsonify({'message': 'Rating submitted successfully', 'rating': new_rating.serialize()}), 201
+    return jsonify({'message': 'Rating submitted successfully'}), 200
   except:
     return jsonify({'message': 'Error submitting rating'}), 500
 
