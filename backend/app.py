@@ -229,6 +229,32 @@ def delete_recipe(recipe_id):
 
   return jsonify({'error': 'Method not allowed'}), 405 
 
+@app.route('/add_favorite/<recipe_id>', methods=['PUT'])
+@login_required
+def favorite(recipe_id):
+    try:
+        recipe = Recipe.query.get(recipe_id)
+        if not recipe:
+            return jsonify({'error': 'Recipe not found'}), 404
+
+        is_favorite = request.json.get('is_favorite')
+        if is_favorite is None:
+            return jsonify({'error': 'is_favorite field is required'}), 400
+
+        # Handle both true and false cases
+        if is_favorite:
+            recipe.favorite = True
+            message = 'Recipe added to favorites successfully'
+        else:
+            recipe.favorite = False
+            message = 'Recipe removed from favorites successfully'
+
+        db.session.commit()
+
+        return jsonify({'message': message}), 200
+    except:
+        return jsonify({'error': 'something went wrong'}), 500
+
 
 if __name__ == '__main__':
     app.run(debug=True)
