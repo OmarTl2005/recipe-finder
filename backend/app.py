@@ -321,6 +321,16 @@ def add_ingredient():
     except:
         return jsonify({'error': 'An error occurred while adding the ingredient'}), 500
 
+@app.route('/get-ingredients/<int:recipe_id>')
+@login_required
+def get_ingredients(recipe_id):
+    try:
+        ingredients = ingredients.query.filter_by(recipe_id=recipe_id).all()
+        return jsonify([{'id': ingredient.id,
+                         'ingredient': ingredient.ingredient} for ingredient in ingredients]), 200
+    except:
+        return jsonify({'error': 'An error occurred while fetching ingredients'}), 500
+
 
 if __name__ == '__main__':
     app.run(debug=True)
