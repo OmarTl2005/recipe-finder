@@ -118,6 +118,7 @@ def index():
                          'title': recipe.title,
                          'description': recipe.description,
                          'cuisine': recipe.cuisine,
+                         'favorite': recipe.favorite,
                          'filename': f'{recipe.filename}'} for recipe in recipes]), 200
     except:
         return jsonify({'error': 'An error occurred while fetching recipes'}), 500
@@ -229,7 +230,7 @@ def delete_recipe(recipe_id):
 
   return jsonify({'error': 'Method not allowed'}), 405 
 
-@app.route('/add_favorite/<recipe_id>', methods=['PUT'])
+@app.route('/favorite/<recipe_id>', methods=['PUT', 'GET'])
 @login_required
 def favorite(recipe_id):
     try:
@@ -242,10 +243,10 @@ def favorite(recipe_id):
             return jsonify({'error': 'is_favorite field is required'}), 400
 
         # Handle both true and false cases
-        if is_favorite:
+        if is_favorite == 'true':
             recipe.favorite = True
             message = 'Recipe added to favorites successfully'
-        else:
+        if is_favorite == 'false':
             recipe.favorite = False
             message = 'Recipe removed from favorites successfully'
 

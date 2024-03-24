@@ -8,12 +8,13 @@ const Main = () => {
   const [search, setSearch] = useState('');
   const [close, setClose] = useState(false);
   const [select, setSelect] = useState(null);
+  const [favorite, setFavorite] = useState(null);
   
   useEffect(() => {
     const getRecipes = async () => {
       try {
         const response = await axios.get('http://localhost:5000/', { withCredentials: true });
-        setRecipes(response.data.map(recipe => ({ ...recipe, isFavorite: false })));
+        setRecipes(response.data.map(recipe => ({ ...recipe }))); // Remove isFavorite property
       } catch (error) {
         console.error(error.response?.data?.error || 'Error fetching recipes');
       }
@@ -44,13 +45,20 @@ const Main = () => {
     return filtered;
   }, [search, select, recipes]);
 
-  const handleFavorite = (recipeId) => {
-    setRecipes(prevRecipes => prevRecipes.map(recipe => {
-      if (recipe.id === recipeId) {
-        return { ...recipe, isFavorite: !recipe.isFavorite };
+  const handleFavorite = async (recipeId) => {
+    try {
+      const response = await axios.get(`http://localhost:5000/favorite/${recipeId}`, { withCredentials: true });
+      if (response.data === 'true') {
+        setFavorite(true);
       }
-      return recipe;
-    }));
+
+      if (response.data === 'false') {
+        setFavorite(false);
+      }
+
+    } catch (error) {
+      console.error('Error favoriting recipe:', error);
+    }
   }
 
   return (
@@ -60,7 +68,7 @@ const Main = () => {
           {filteredRecipes.map((recipe) => (
             <li className='flex flex-col relative justify-center gap-1 isolate aspect-video shadow-white shadow-3xl p-8 rounded-[17%] bg-gradient-to-b from-blue-300/30' key={recipe.id}>
               <button onClick={() => handleFavorite(recipe.id)}>
-                {recipe.isFavorite ? <GoHeartFill className='text-red-600 text-[32px] absolute top-5 left-5 transition-all duration-200 ease-in-out' /> : <GoHeart className='transition-all duration-200 ease-in-out text-red-600 text-[32px] absolute top-5 left-5' />}
+                {recipe.favorite ? <GoHeartFill className='text-red-600 text-[32px] absolute top-5 left-5 transition-all duration-200 ease-in-out' /> : <GoHeart className='transition-all duration-200 ease-in-out text-red-600 text-[32px] absolute top-5 left-5' />}
               </button>
               <img className='rounded-full' width='200px' height='200px' src={`http://localhost:5000/uploads/${recipe.filename}`} alt={recipe.title} />
               <h1 className='mt-5'>{recipe.title}</h1>
