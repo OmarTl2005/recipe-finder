@@ -45,7 +45,7 @@ const Login = () => {
 
   return (
     <>
-      <form method='POST' onSubmit={handleSubmit} className='w-full h-full flex-col flex items-center justify-center gap-4'>
+      <form method='POST' onSubmit={handleSubmit} className='w-full h-screen flex-col flex items-center justify-center gap-4'>
         {
           showError ? 
           <div className='bg-red-500 text-white p-2 rounded absolute top-3 w-[30%] flex transition-all duration-200'>

@@ -51,7 +51,7 @@ const Register = () => {
 
   return (
     <>
-      <form onSubmit={handleSubmit} className='w-screen h-screen flex-col flex items-center justify-center gap-4 transition-all duration-300'>
+      <form onSubmit={handleSubmit} className='w-full h-screen flex-col flex items-center justify-center gap-4 transition-all duration-300'>
         {
             showError ? 
             <div className='bg-red-500 text-white p-2 rounded absolute top-3 w-[20%] flex transition-all duration-200'>

@@ -53,7 +53,7 @@ const Logout = () => {
 
   return (
     <div className='flex items-center justify-center'>
-      <button onClick={handleLogout} className='bg-gradient-to-br from-lightBlue to-darkBlue text-white py-2 px-4 rounded-full hover:-translate-y-2 transition-all duration-500 ease-in-out'>Logout</button>
+      <button onClick={handleLogout} className='shadow-2xl shadow-white bg-gradient-to-br from-lightBlue to-darkBlue text-white py-2 px-4 rounded-full hover:-translate-y-2 transition-all duration-500 ease-in-out'>Logout</button>
       {
           showError ? 
           <div className='bg-red-500 text-white p-2 rounded absolute top-3 left-[41%] w-[30%] flex transition-all duration-200'>

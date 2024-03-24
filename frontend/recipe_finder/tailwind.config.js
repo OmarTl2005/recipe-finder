@@ -9,6 +9,9 @@ module.exports = {
         lightOrange: '#dba745',
         darkPink: '#D83C5E',
         bgBlue: '#02314F'
+      },
+      boxShadow: {
+        '3xl': '0 150px 200px -90px rgba(0, 0, 0, 0.1)',
       }
     },
     fontFamily: {

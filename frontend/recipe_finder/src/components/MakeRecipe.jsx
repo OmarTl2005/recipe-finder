@@ -6,6 +6,7 @@ import { AiFillCloseCircle } from "react-icons/ai";
 const MakeRecipe = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
+  const [cuisine, setCuisine] = useState('');
   const [file, setFile] = useState(null);
   const [error, setError] = useState(null)
   const [showError, setShowError] = useState(false)
@@ -17,7 +18,8 @@ const MakeRecipe = () => {
     const formData = new FormData(); // Create a FormData object for file upload
     formData.append('title', title);
     formData.append('description', description);
-    formData.append('file', file); // Add the selected file
+    formData.append('cuisine', cuisine);
+    formData.append('file', file); 
 
     try {
       const response = await axios.post('http://localhost:5000/make-recipe', formData, {
@@ -50,7 +52,7 @@ const MakeRecipe = () => {
   };
 
   return (
-        <form className='w-screen h-screen flex-col flex items-center justify-center gap-4' method='POST' onSubmit={handleSubmit}>
+        <form className='w-full h-screen flex-col flex items-center justify-center gap-4' method='POST' onSubmit={handleSubmit}>
           {
           showError ? 
           <div className='bg-red-500 text-white p-2 rounded absolute top-3 w-[30%] flex transition-all duration-200'>
@@ -76,6 +78,7 @@ const MakeRecipe = () => {
             onChange={(e) => setTitle(e.target.value)}
             required
             className='border-2 border-blue-300/80 rounded p-2 w-1/4 bg-gray-200'
+            maxLength={50}
           />
           <input
             name='description'
@@ -83,6 +86,15 @@ const MakeRecipe = () => {
             type='text'
             value={description}
             onChange={(e) => setDescription(e.target.value)}
+            required
+            className='border-2 border-blue-300/80 rounded p-2 w-1/4 bg-gray-200'
+          />
+          <input
+            name='cuisine'
+            placeholder='Cuisine'
+            type='text'
+            value={cuisine}
+            onChange={(e) => setCuisine(e.target.value)}
             required
             className='border-2 border-blue-300/80 rounded p-2 w-1/4 bg-gray-200'
           />

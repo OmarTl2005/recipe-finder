@@ -5,10 +5,10 @@ Recipe Finder is a web application that allows users to discover, save, and shar
 ## Features
 
 - User authentication and authorization system
-- Search for recipes by ingredients, cuisine type, or dietary restrictions
+- Search for recipes by cuisine type, or dietary restrictions
 - Save favorite recipes to personalized collections
 - Write reviews and ratings for recipes
-- Interact with other users by following, liking, and commenting on recipes
+- Interact with other users by liking, and commenting on recipes
 - Explore trending recipes and user-generated content
 - Responsive design for seamless user experience across devices
 
