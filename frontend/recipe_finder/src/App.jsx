@@ -18,7 +18,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/logout" element={<Logout />} />
           <Route path="/make-recipe" element={<MakeRecipe />} />
-          <Route path="/show-recipe" element={<ShowRecipe />} />
+          <Route path="/my-recipes" element={<ShowRecipe />} />
         </Routes>
       </BrowserRouter>
     </div>

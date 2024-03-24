@@ -42,6 +42,12 @@ const Nav = () => {
             >
               Add recipe
             </a>
+            <a
+              className="shadow-2xl shadow-white bg-gradient-to-br from-lightBlue to-darkBlue text-white py-2 px-4 rounded-full hover:-translate-y-2 transition-all duration-500 ease-in-out"
+              href="/my-recipes"
+            >
+              My recipes
+            </a>
             <Logout />
           </>
           ) : (

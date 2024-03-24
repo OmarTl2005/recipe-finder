@@ -52,6 +52,7 @@ class Recipe(db.Model):
     description = db.Column(db.Text)
     cuisine = db.Column(db.String(128))
     rating = db.Column(db.Float)
+    favorite = db.Column(db.Boolean)
     filename = db.Column(db.String(255), unique=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
@@ -130,6 +131,7 @@ def recipes():
         return jsonify([{'id': recipe.id,
                          'title': recipe.title,
                          'description': recipe.description,
+                         'cuisine': recipe.cuisine,
                          'filename': f'{recipe.filename}'} for recipe in recipes]), 200
     except:
         return jsonify({'error': 'An error occurred while fetching recipes'}), 500
