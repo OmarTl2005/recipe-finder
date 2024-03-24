@@ -53,11 +53,21 @@ class Recipe(db.Model):
     cuisine = db.Column(db.String(128))
     rating = db.Column(db.Float)
     favorite = db.Column(db.Boolean)
+    content = db.Column(db.Text)
     filename = db.Column(db.String(255), unique=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
+    ingredients = db.relationship('ingredients', backref='recipe', lazy='dynamic')
 
     def __repr__(self):
         return f'<Recipe {self.title}>'
+
+class ingredients(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    ingredient = db.Column(db.Text)
+    recipe_id = db.Column(db.Integer, db.ForeignKey('recipe.id'))
+
+    def __repr__(self):
+        return f'<Ingredient {self.name}>'
 
 # managing routes
 

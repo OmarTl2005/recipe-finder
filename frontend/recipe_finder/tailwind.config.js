@@ -15,7 +15,8 @@ module.exports = {
       }
     },
     fontFamily: {
-      madimi: ["Madimi One", 'sans-serif']
+      madimi: ["Madimi One", 'sans-serif'],
+      bitter: ["Bitter", 'serif']
     }
   },
   plugins: [],
