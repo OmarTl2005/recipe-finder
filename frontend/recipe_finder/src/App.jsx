@@ -9,7 +9,7 @@ import ShowRecipe from "./components/ShowRecipe";
 
 function App() {
   return (
-    <div className="flex flex-col bg-bgBlue w-full h-full text-white m-0 p-0 ">
+    <div className="flex flex-col bg-bgBlue w-screen h-screen text-white m-0 p-0 overflow-y-scroll ">
       <BrowserRouter>
       <Nav className="w-full h-full p-0 m-0" />
         <Routes>
