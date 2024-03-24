@@ -241,7 +241,7 @@ def delete_recipe(recipe_id):
 
   return jsonify({'error': 'Method not allowed'}), 405 
 
-@app.route('/favorite/<recipe_id>', methods=['PUT'])
+@app.route('/favorite/<int:recipe_id>', methods=['PUT'])
 @login_required
 def favorite(recipe_id):
     try:
@@ -267,7 +267,7 @@ def favorite(recipe_id):
     except:
         return jsonify({'error': 'something went wrong'}), 500
 
-@app.route('/recipe/<id>')
+@app.route('/recipe/<int:id>')
 def recipe(id):
     try:
         recipes = Recipe.query.filter_by(id=id).all()
@@ -280,6 +280,30 @@ def recipe(id):
     except:
         return jsonify({'error': 'An error occurred while fetching recipes'}), 500
 
+@app.route('/rating/<int:recipe_id>', methods=['POST'])
+@login_required
+def rate_recipe(recipe_id):
+  try:
+    # Get request data
+    rating_data = request.json
+    rating = rating_data.get('rating')
+
+    if not rating:
+      return jsonify({'message': 'Missing rating data'}), 400
+
+    # Find the recipe by ID
+    recipe = Recipe.query.get(recipe_id)
+    if not recipe:
+      return jsonify({'message': 'Recipe not found'}), 404
+
+    # Create a new Rating record
+    new_rating = Rating(recipe_id=recipe_id, rating=rating)
+    db.session.add(new_rating)
+    db.session.commit()
+
+    return jsonify({'message': 'Rating submitted successfully', 'rating': new_rating.serialize()}), 201
+  except:
+    return jsonify({'message': 'Error submitting rating'}), 500
 
 
 
