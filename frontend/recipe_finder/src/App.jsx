@@ -10,7 +10,7 @@ import Recipe from "./components/Recipe";
 import Favorites from "./components/Favorites";
 
 function App() {
-  const url = 'http://10.214.129.166:5000'
+  const url = 'https://recipe-finder-backend-yg2e.onrender.com'
   return (
     <div className="flex flex-col bg-bgBlue w-screen h-screen text-white m-0 p-0 overflow-y-scroll ">
       <BrowserRouter>

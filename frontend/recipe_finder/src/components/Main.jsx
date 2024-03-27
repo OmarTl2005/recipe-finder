@@ -68,7 +68,7 @@ const Main = ({ url }) => {
       const updatedRecipe = recipes.find(recipe => recipe.id === recipeId);
       const isFavorite = updatedRecipe.favorite;
   
-      await axios.put(`http://localhost:5000/favorite/${recipeId}`, {
+      await axios.put(`${url}/favorite/${recipeId}`, {
         is_favorite: !isFavorite ? 'true' : 'false'
       }, { withCredentials: true });
   
