@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 const Comments = ({ recipeId }) => {
     const [comments, setComments] = useState(null);
     const [newComment, setNewComment] = useState('');
+    const [user, setUser] = useState(null);
 
 
     useEffect(() => {
@@ -11,12 +12,21 @@ const Comments = ({ recipeId }) => {
             try {
                 const response = await axios.get(`http://localhost:5000/comments/${recipeId}`);
                 setComments(response.data);
-                console.log(comments);
             } catch(error) {
                 console.error('Error fetching comments:', error);
             }
         }
 
+        const getUser = async () => {
+            try {
+                const response = await axios.get('http://localhost:5000/get-user', { withCredentials: true });
+                setUser(response.data);
+            } catch (error) {
+                console.error('Error fetching user:', error);
+            }
+        }
+
+        getUser();
         getComments();
     }, [recipeId]);
 
@@ -29,7 +39,7 @@ const Comments = ({ recipeId }) => {
         }
     }
 
-    const deleteComment = async (commentId, username) => {
+    const deleteComment = async (commentId) => {
         try {
             const response = await axios.delete(`http://localhost:5000/delete-comment/${commentId}`, { withCredentials: true });
             console.log(response.data);
@@ -47,7 +57,11 @@ const Comments = ({ recipeId }) => {
                         <>
                           <p>{comment.username}</p>
                           <p>{comment.comment}</p>
-                          <button>Delete Comment</button>
+                          {
+                                user && user.username === comment.username ? (
+                                    <button onClick={() => deleteComment(comment.id)}>Delete</button>
+                                ) : null
+                          }
                         </>
                     )
                 })}</p>
