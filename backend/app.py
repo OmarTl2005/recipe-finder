@@ -77,6 +77,7 @@ class Ingredient(db.Model):
 class Comments(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     comment = db.Column(db.Text)
+    username = db.Column(db.String(100))
     recipe_id = db.Column(db.Integer, db.ForeignKey('recipe.id'))
 
     def __repr__(self):
@@ -347,7 +348,7 @@ def add_comment(recipe_id):
     try:
         data = request.json
         comment = data.get('comment')
-        new_comment = Comments(comment=comment, recipe_id=recipe_id)
+        new_comment = Comments(comment=comment, recipe_id=recipe_id, username=current_user.username)
         db.session.add(new_comment)
         db.session.commit()
         return jsonify({'message': 'Comment added successfully'}), 200
