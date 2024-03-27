@@ -8,6 +8,7 @@ const Main = () => {
   const [search, setSearch] = useState('');
   const [close, setClose] = useState(true);
   const [select, setSelect] = useState(null);
+  const [rating, setRating] = useState(null);
 
   useEffect(() => {
     const getRecipes = async () => {
@@ -28,6 +29,7 @@ const Main = () => {
 
   const filteredRecipes = useMemo(() => {
     let filtered = [...recipes];
+    console.log(filtered);
 
     if (search) {
       filtered = filtered.filter((recipe) =>
@@ -41,8 +43,14 @@ const Main = () => {
       );
     }
 
+    if (rating) {
+      filtered = filtered.filter((recipe) =>
+        recipe.rating === rating
+      );
+    }
+
     return filtered;
-  }, [search, select, recipes]);
+  }, [search, select, recipes, rating]);
 
   const handleFavorite = async (recipeId) => {
     try {
@@ -79,7 +87,7 @@ const Main = () => {
                 <button onClick={(e) => {e.preventDefault(); handleFavorite(recipe.id)}}>
                   {recipe.favorite ? <GoHeartFill className='text-red-600 text-[32px] absolute top-5 left-5 transition-all duration-200 ease-in-out' /> : <GoHeart className='transition-all duration-200 ease-in-out text-red-600 text-[32px] absolute top-5 left-5' />}
                 </button>
-                <img className='rounded-full' width='200px' height='200px' src={`http://localhost:5000/uploads/${recipe.filename}`} alt={recipe.title} />
+                <img className='rounded-full w-[200px] h-[200px]' width='200px' height='200px' src={`http://localhost:5000/uploads/${recipe.filename}`} alt={recipe.title} />
                 <h1 className='mt-5'>{recipe.title}</h1>
               </li>
             </a>
@@ -88,7 +96,7 @@ const Main = () => {
       ) : (
         <p>Loading recipes...</p>
       )}
-      <Filter select={select} setSelect={setSelect} search={search} setSearch={setSearch} close={close} setClose={setClose} cuisine={cuisine} />
+      <Filter setRating={setRating} select={select} setSelect={setSelect} search={search} setSearch={setSearch} close={close} setClose={setClose} cuisine={cuisine} />
     </div>
   );
 };

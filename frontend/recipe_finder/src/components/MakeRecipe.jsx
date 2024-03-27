@@ -13,7 +13,8 @@ const MakeRecipe = () => {
   const [success, setSuccess] = useState(null);
   const [showSuccess, setShowSuccess] = useState(false);
   const [content, setContent] = useState([""]);
-  const [ingredients, setIngredients] = useState([""]); // State for ingredients
+  const [ingredients, setIngredients] = useState([""]);
+  const [recipeId, setRecipeId] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -23,7 +24,15 @@ const MakeRecipe = () => {
       formData.append('description', description);
       formData.append('cuisine', cuisine);
       formData.append('file', file);
-
+      formData.append('recipeId', recipeId);
+      content.forEach((instruction) => {
+        formData.append('instruction', instruction);
+      });
+      
+      ingredients.forEach((ingredient) => {
+        formData.append('ingredient', ingredient);
+      });
+  
       // Send recipe data to make-recipe route
       const response = await axios.post('http://localhost:5000/make-recipe', formData, {
         withCredentials: true,
@@ -31,30 +40,18 @@ const MakeRecipe = () => {
           'Content-Type': 'multipart/form-data', // Add this header
         },
       });
-
-      // Extract the recipe ID from the response
-      const recipeId = response.data.recipeId;
-      const data = new FormData();
-      data.append('recipeId', recipeId);
-
-      content.forEach((instruction) => {
-        data.append('instruction', instruction);
-      });
-
-      ingredients.forEach((ingredient) => {
-        data.append('ingredient', ingredient);
-      });
-      console.log(data.getAll('ingredient'));
-      await axios.post('http://localhost:5000/add-ingredient', data, {withCredentials: true});
-
-      // Show success message
-      setSuccess('Recipe submitted successfully');
-      setShowSuccess(true);
-
-      //setTimeout(() => {
-      //  window.location.reload();
-     // }, 1000);
-      
+  
+      // Check if response is defined before accessing data property
+      if (response && response.data) {
+        setRecipeId(response.data.recipeId);
+        // Show success message
+        setSuccess('Recipe submitted successfully');
+        setShowSuccess(true);
+      } else {
+        // Handle undefined response
+        setError('Error submitting recipe');
+        setShowError(true);
+      }
     } catch (error) {
       console.error(error.response.data.error);
       if (error.response.data.error) {
@@ -63,6 +60,7 @@ const MakeRecipe = () => {
       }
     }
   };
+  
 
   const handleErrorDismiss = () => {
     setShowError(false);

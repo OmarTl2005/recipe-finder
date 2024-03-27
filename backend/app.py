@@ -134,6 +134,7 @@ def index():
                          'description': recipe.description,
                          'cuisine': recipe.cuisine,
                          'favorite': recipe.favorite,
+                         'rating': recipe.rating,
                          'filename': f'{recipe.filename}'} for recipe in recipes]), 200
     except:
         return jsonify({'error': 'An error occurred while fetching recipes'}), 500
@@ -209,11 +210,22 @@ def make_recipe():
                 title = request.form.get('title')
                 description = request.form.get('description')
                 cuisine = request.form.get('cuisine')
-                # ... (rest of your recipe creation logic)
+
                 new_recipe = Recipe(title=title, description=description, cuisine=cuisine, filename=filename, user_id=current_user.id)
-                # ... (save new_recipe to database)
+                
+                # Retrieve ingredients and instructions as lists
+                ingredients = request.form.getlist('ingredient')
+                instructions = request.form.getlist('instruction')
+
+                # Create and add ingredients to the recipe
+                for ingredient, instruction in zip(ingredients, instructions):
+                    new_ingredient = Ingredient(ingredient=ingredient, instructions=instruction, recipe_id=new_recipe.id)
+                    db.session.add(new_ingredient)
+
+                # Save the new recipe and ingredients
                 db.session.add(new_recipe)
                 db.session.commit()
+
                 return jsonify({'message': 'Recipe created successfully!', 'recipeId': new_recipe.id}), 200
             else:
                 return jsonify({'error': 'No file uploaded!'}), 400  # Bad request
@@ -234,6 +246,12 @@ def delete_recipe(recipe_id):
     if recipe.user_id != current_user.id:
       return jsonify({'error': 'Unauthorized to delete this recipe'}), 403
 
+    # Delete the uploaded file from the file system if it exists
+    if recipe.filename:
+        file_path = os.path.join(app.config['UPLOAD_FOLDER'], recipe.filename)
+        if os.path.exists(file_path):
+            os.remove(file_path)
+    
     db.session.delete(recipe)
     # ... (Optional: Delete the uploaded file if needed)
 
@@ -241,9 +259,6 @@ def delete_recipe(recipe_id):
     return jsonify({'message': 'Recipe deleted successfully'}), 200  
   except:
     return jsonify({'error': 'An error occurred while deleting the recipe'}), 500 
-
-    
-
   return jsonify({'error': 'Method not allowed'}), 405 
 
 @app.route('/favorite/<int:recipe_id>', methods=['PUT'])
@@ -309,23 +324,6 @@ def rate_recipe(recipe_id):
   except:
     return jsonify({'message': 'Error submitting rating'}), 500
 
-
-@app.route('/add-ingredient', methods=['POST'])
-@login_required
-def add_ingredient():
-    try:
-        ingredient = request.form.getlist('ingredient')
-        instruction = request.form.getlist('instruction')
-        recipe_id = request.form.get('recipeId')
-        
-        for i in range(len(ingredient)):
-            new_ingredient = Ingredient(ingredient=ingredient[i], instructions=instruction[i], recipe_id=recipe_id)
-            db.session.add(new_ingredient)
-        
-        db.session.commit()
-        return jsonify({'message': 'Ingredients added successfully'}), 200
-    except:
-        return jsonify({'error': 'An error occurred while adding the ingredients'}), 500
 
 @app.route('/ingredients/<int:recipe_id>')
 def ingredients(recipe_id):
