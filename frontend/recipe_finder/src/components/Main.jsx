@@ -78,7 +78,7 @@ const Main = () => {
   }
 
   return (
-    <div className='flex flex-col items-center justify-between h-full w-[80%] self-center'>
+    <div className='flex flex-col items-center justify-between h-full w-full self-center'>
       {filteredRecipes.length > 0 ? (
         <ul className='flex text-center justify-center flex-wrap w-full h-full gap-[100px] max-h-[100px]'>
           {filteredRecipes.map((recipe) => (

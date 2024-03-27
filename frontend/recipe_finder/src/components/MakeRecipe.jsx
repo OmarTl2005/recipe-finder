@@ -44,6 +44,9 @@ const MakeRecipe = () => {
         // Show success message
         setSuccess('Recipe submitted successfully');
         setShowSuccess(true);
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000)
       } else {
         // Handle undefined response
         setError('Error submitting recipe');
@@ -107,13 +110,13 @@ const MakeRecipe = () => {
   return (
     <form className='w-full h-auto flex-col flex items-center justify-center gap-4 mb-[40px]text-black mb-8' method='POST' onSubmit={handleSubmit}>
       {showError ? (
-        <div className='bg-red-500 text-white p-2 rounded absolute top-3 w-[30%] flex transition-all duration-200'>
+        <div className='bg-red-500 z-100 text-white p-2 rounded absolute top-3 w-[30%] flex transition-all duration-200'>
           <p className='w-[90%]'>{error}!</p>
           <button onClick={handleErrorDismiss} className='bg-red-300 px-2 py-1 rounded text-white'><AiFillCloseCircle /></button>
         </div>
       ) : null}
       {showSuccess ? (
-        <div className='bg-green-600 text-white p-2 rounded absolute top-3 w-[20%] flex transition-all duration-200'>
+        <div className='bg-green-600 z-100 text-white p-2 rounded absolute top-3 w-[20%] flex transition-all duration-200'>
           <p className='w-[90%]'>{success}!</p>
           <button onClick={handleSuccess} className='bg-green-300 px-2 py-1 rounded text-white'><AiFillCloseCircle /></button>
         </div>
