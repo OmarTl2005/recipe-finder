@@ -14,7 +14,6 @@ const MakeRecipe = () => {
   const [showSuccess, setShowSuccess] = useState(false);
   const [content, setContent] = useState([""]);
   const [ingredients, setIngredients] = useState([""]);
-  const [recipeId, setRecipeId] = useState(null);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -24,7 +23,6 @@ const MakeRecipe = () => {
       formData.append('description', description);
       formData.append('cuisine', cuisine);
       formData.append('file', file);
-      formData.append('recipeId', recipeId);
       content.forEach((instruction) => {
         formData.append('instruction', instruction);
       });
@@ -43,7 +41,6 @@ const MakeRecipe = () => {
   
       // Check if response is defined before accessing data property
       if (response && response.data) {
-        setRecipeId(response.data.recipeId);
         // Show success message
         setSuccess('Recipe submitted successfully');
         setShowSuccess(true);
@@ -108,7 +105,7 @@ const MakeRecipe = () => {
 
 
   return (
-    <form className='w-full h-auto flex-col flex items-center justify-center gap-4 mb-[40px]text-black' method='POST' onSubmit={handleSubmit}>
+    <form className='w-full h-auto flex-col flex items-center justify-center gap-4 mb-[40px]text-black mb-8' method='POST' onSubmit={handleSubmit}>
       {showError ? (
         <div className='bg-red-500 text-white p-2 rounded absolute top-3 w-[30%] flex transition-all duration-200'>
           <p className='w-[90%]'>{error}!</p>

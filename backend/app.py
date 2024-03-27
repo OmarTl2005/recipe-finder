@@ -181,38 +181,35 @@ from werkzeug.utils import secure_filename
 @login_required
 def make_recipe():
     if request.method == 'POST':
-        # Access uploaded file
         uploaded_file = request.files.get('file')
         try:
             if uploaded_file:
-                # Secure filename
                 filename = secure_filename(uploaded_file.filename)
-
                 # Check for existing filenames and modify if needed
-                base, extension = os.path.splitext(filename)  # Separate base and extension
+                base, extension = os.path.splitext(filename)
                 i = 1
-                temp_filename = f"{base}_{i}{extension}"  # Initial modified filename
+                temp_filename = f"{base}_{i}{extension}"
                 while Recipe.query.filter_by(filename=temp_filename).first():
                     i += 1
                     temp_filename = f"{base}({i}){extension}"
                 i = 1
-                filename = temp_filename  # Assign the unique filename
+                filename = temp_filename
 
-                # Create uploads folder if it doesn't exist
-                uploads_dir = os.path.join(app.config['UPLOAD_FOLDER'], '')  # Add trailing slash
-                os.makedirs(uploads_dir, exist_ok=True)  # Create folder if needed
+                uploads_dir = os.path.join(app.config['UPLOAD_FOLDER'], '')
+                os.makedirs(uploads_dir, exist_ok=True)
 
-                # Save the file
                 filepath = os.path.join(uploads_dir, filename)
                 uploaded_file.save(filepath)
 
-                # Create new recipe with filename (and other data)
                 title = request.form.get('title')
                 description = request.form.get('description')
                 cuisine = request.form.get('cuisine')
 
                 new_recipe = Recipe(title=title, description=description, cuisine=cuisine, filename=filename, user_id=current_user.id)
-                
+
+                db.session.add(new_recipe)
+                db.session.commit()
+
                 # Retrieve ingredients and instructions as lists
                 ingredients = request.form.getlist('ingredient')
                 instructions = request.form.getlist('instruction')
@@ -222,15 +219,15 @@ def make_recipe():
                     new_ingredient = Ingredient(ingredient=ingredient, instructions=instruction, recipe_id=new_recipe.id)
                     db.session.add(new_ingredient)
 
-                # Save the new recipe and ingredients
-                db.session.add(new_recipe)
+                # Commit the ingredients
                 db.session.commit()
 
-                return jsonify({'message': 'Recipe created successfully!', 'recipeId': new_recipe.id}), 200
+                return jsonify({'message': 'Recipe created successfully!'}), 200
             else:
                 return jsonify({'error': 'No file uploaded!'}), 400  # Bad request
         except:
             return jsonify({'error': 'An error occurred while creating the recipe.'}), 500
+
 
 
 
@@ -240,6 +237,7 @@ def delete_recipe(recipe_id):
   """Deletes a recipe based on its ID."""
   try:
     recipe = Recipe.query.get(recipe_id)
+    ingredients = Ingredient.query.filter_by(recipe_id=recipe_id).all()
     if not recipe:
       return jsonify({'error': 'Recipe not found'}), 404
 
@@ -253,6 +251,7 @@ def delete_recipe(recipe_id):
             os.remove(file_path)
     
     db.session.delete(recipe)
+    db.session.delete(ingredients)
     # ... (Optional: Delete the uploaded file if needed)
 
     db.session.commit()
