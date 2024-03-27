@@ -22,18 +22,18 @@ const Nav = () => {
 
   return (
     <div className='flex self-end justify-between w-full h-1/5 m-0 p-0'>
-      <div className='flex items-center gap-4 w-1/3 pl-8 py-4 hover:-translate-y-2 transition-all duration-500'>
+      <div className='flex items-center gap-4 w-[40%] pl-8 py-4 hover:-translate-y-2 transition-all duration-500'>
         <a className='' href='/'><img width='100' height='100' src='http://localhost:5000/media/recipe-finder.png' alt='recipe finder logo' /></a>
         <a href='/'><h1 className='text-transparent bg-clip-text bg-gradient-to-br from-darkPink to-darkBlue text-3xl font-madimi'>Recipe Finder</h1></a>
       </div>
       <div className='w-2/3 flex justify-around'>
-        <div className='w-1/3 flex items-center justify-center gap-6'>
+        <div className='w-[33%] flex items-center justify-center gap-6'>
           <a
             className='shadow-2xl shadow-white bg-gradient-to-br from-lightOrange to-darkPink text-white py-2 px-4 rounded-full hover:-translate-y-2 transition-all duration-500 ease-in-out'
             href='/'>Home
           </a>
         </div>
-        <div className={loggedin ? 'w-[32%] flex items-center justify-around' : `w-[32%] flex items-center justify-between`}>
+        <div className={loggedin ? 'w-[50%] flex items-center justify-around' : `w-[32%] flex items-center justify-between`}>
         {loggedin ? (
           <>
             <a
@@ -47,6 +47,12 @@ const Nav = () => {
               href="/my-recipes"
             >
               My recipes
+            </a>
+            <a
+              className="shadow-2xl shadow-white bg-gradient-to-br from-lightBlue to-darkBlue text-white py-2 px-4 rounded-full hover:-translate-y-2 transition-all duration-500 ease-in-out"
+              href="/favorites"
+            >
+              My favorites
             </a>
             <Logout />
           </>

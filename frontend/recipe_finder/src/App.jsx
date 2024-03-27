@@ -7,6 +7,7 @@ import Main from "./components/Main";
 import MakeRecipe from "./components/MakeRecipe";
 import ShowRecipe from "./components/ShowRecipe";
 import Recipe from "./components/Recipe";
+import Favorites from "./components/Favorites";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="/make-recipe" element={<MakeRecipe />} />
           <Route path="/my-recipes" element={<ShowRecipe />} />
           <Route path="/recipe/:id" element={<Recipe />} />
+          <Route path="/favorites" element={<Favorites />} />
         </Routes>
       </BrowserRouter>
     </div>
