@@ -3,6 +3,7 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import { FaStar } from 'react-icons/fa';
 import { AiOutlineLoading3Quarters } from 'react-icons/ai';
+import Comments from './Comments';
 
 
 const Recipe = () => {
@@ -27,7 +28,6 @@ const Recipe = () => {
     const getIngreidents = async () => {
       const response = await axios.get(`http://localhost:5000/ingredients/${id}`);
       setIngredients(response.data);
-      console.log(response.data);
     }
 
     getIngreidents();
@@ -102,6 +102,7 @@ const Recipe = () => {
           <AiOutlineLoading3Quarters className='animate-spin' /> Loading
         </h1>
       )}
+      <Comments recipeId={id} />
     </div>
   );
 };

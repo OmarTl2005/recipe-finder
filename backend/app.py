@@ -77,7 +77,7 @@ class Ingredient(db.Model):
 class Comments(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     comment = db.Column(db.Text)
-    username = db.Column(db.String(100))
+    username = db.Column(db.Text)
     recipe_id = db.Column(db.Integer, db.ForeignKey('recipe.id'))
 
     def __repr__(self):
@@ -348,7 +348,8 @@ def add_comment(recipe_id):
     try:
         data = request.json
         comment = data.get('comment')
-        new_comment = Comments(comment=comment, recipe_id=recipe_id, username=current_user.username)
+        user = User.query.filter_by(username=current_user.username).first()
+        new_comment = Comments(comment=comment, recipe_id=recipe_id, username=user.username)
         db.session.add(new_comment)
         db.session.commit()
         return jsonify({'message': 'Comment added successfully'}), 200
@@ -359,7 +360,7 @@ def add_comment(recipe_id):
 def comments(recipe_id):
     try:
         my_comments = Comments.query.filter_by(recipe_id=recipe_id).all()
-        comment_list = [{'id': comment.id, 'comment': comment.comment} for comment in my_comments]
+        comment_list = [{'id': comment.id, 'comment': comment.comment, 'username': comment.username} for comment in my_comments]
         return jsonify(comment_list), 200
     except:
         return jsonify({'error': 'An error occurred while fetching comments'}), 500
