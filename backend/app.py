@@ -149,6 +149,7 @@ def recipes():
                          'title': recipe.title,
                          'description': recipe.description,
                          'cuisine': recipe.cuisine,
+                         'rating': recipe.rating,
                          'favorite': recipe.favorite,
                          'filename': f'{recipe.filename}'} for recipe in recipes]), 200
     except:

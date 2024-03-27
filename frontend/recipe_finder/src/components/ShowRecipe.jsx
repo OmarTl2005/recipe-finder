@@ -10,6 +10,7 @@ const ShowRecipe = () => {
   const [search, setSearch] = useState('');
   const [close, setClose] = useState(true);
   const [select, setSelect] = useState(null);
+  const [rating, setRating] = useState(null);
 
 
   useEffect(() => {
@@ -59,8 +60,14 @@ const ShowRecipe = () => {
       );
     }
 
+    if (rating) {
+      filtered = filtered.filter((recipe) =>
+        String(recipe.rating) === rating
+      );
+    }
+
     return filtered;
-  }, [search, select, recipes]);
+  }, [search, recipes, select, rating]);
 
   const handleFavorite = async (recipeId) => {
     try {
@@ -107,7 +114,7 @@ const ShowRecipe = () => {
       ) : (
         <p>Loading recipes...</p>
       )}
-      <Filter select={select} setSelect={setSelect} search={search} setSearch={setSearch} close={close} setClose={setClose} cuisine={cuisine} />
+      <Filter setRating={setRating} select={select} setSelect={setSelect} search={search} setSearch={setSearch} close={close} setClose={setClose} cuisine={cuisine} />
     </div>
   );
 };
