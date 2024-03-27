@@ -365,5 +365,17 @@ def comments(recipe_id):
     except:
         return jsonify({'error': 'An error occurred while fetching comments'}), 500
 
+@app.route('/delete-comment/<int:comment_id>', methods=['DELETE'])
+def delete_comment(comment_id):
+    try:
+        comment = Comments.query.get(comment_id)
+        if not comment:
+            return jsonify({'error': 'Comment not found'}), 404
+        db.session.delete(comment)
+        db.session.commit()
+        return jsonify({'message': 'Comment deleted successfully'}), 200
+    except:
+        return jsonify({'error': 'An error occurred while deleting comment'}), 500
+
 if __name__ == '__main__':
     app.run(debug=True)
