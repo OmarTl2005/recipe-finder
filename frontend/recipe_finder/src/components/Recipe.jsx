@@ -48,14 +48,14 @@ const Recipe = () => {
     <div className='flex flex-col items-center justify-center mt-10 w-[80%] self-center mb-20'>
       {recipe ? (
         <>
-          <h1 className='text-transparent bg-clip-text bg-gradient-to-br from-lightOrange to-darkBlue text-4xl font-madimi cursor-pointer hover:-translate-y-2 transition-all duration-500 '>
+          <h1 className='text-transparent bg-clip-text bg-gradient-to-b from-lightBlue to-darkBlue text-4xl font-madimi cursor-pointer hover:-translate-y-2 transition-all duration-500 '>
             {recipe.title}
           </h1>
           <div className='flex justify-between items-center w-full mt-12 h-full flex-wrap'>
             <div className='flex flex-col w-1/2 gap-6'>
                 <div className='w-full flex flex-col items-center justify-center gap-y-10'>
                   <h1 className='text-3xl font-madimi'>Description:</h1>
-                  <p className='text-center font-bitter w-[80%] '>{recipe.description}</p>
+                  <p className='text-center font-madimi w-[80%] text-lg'>{recipe.description}</p>
                 </div>
             </div>
             <div className='w-1/2 flex flex-col items-center gap-5 justify-center'>
@@ -75,13 +75,19 @@ const Recipe = () => {
                 }
               </div>
             </div>
-            <div className='w-full flex flex-col items-center justify-center gap-y-10 mt-14'>
+            <div className='w-full flex self-center flex-col items-center justify-center gap-y-10 mt-14'>
                 <h1 className='text-3xl font-madimi'>Instructions:</h1>
-                <p className='text-center font-madimi w-[80%] text-lg'>{recipe.content}</p>
+                <ul className='flex w-[75%] flex-col gap-5 mt-10 list-decimal'>
+                {ingredients.map((instruction) => (
+                  <li key={instruction.id} className='text-lg font-madimi'>
+                    {instruction.instruction}
+                  </li>
+                ))}
+              </ul>
             </div>
             <div className='w-full flex flex-col items-center mt-14'>
               <h1 className='text-3xl font-madimi'>Ingredients:</h1>
-              <ul className='flex flex-col gap-5 mt-10 list-disc'>
+              <ul className='flex w-[75%] flex-col gap-5 mt-10 list-disc'>
                 {ingredients.map((ingredient) => (
                   <li key={ingredient.id} className='text-lg font-madimi'>
                     {ingredient.ingredient}
