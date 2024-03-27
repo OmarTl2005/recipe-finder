@@ -29,7 +29,6 @@ const Main = () => {
 
   const filteredRecipes = useMemo(() => {
     let filtered = [...recipes];
-    console.log(filtered);
 
     if (search) {
       filtered = filtered.filter((recipe) =>
@@ -43,9 +42,11 @@ const Main = () => {
       );
     }
 
+    console.log(rating)
+
     if (rating) {
       filtered = filtered.filter((recipe) =>
-        recipe.rating === rating
+        String(recipe.rating) === rating
       );
     }
 
