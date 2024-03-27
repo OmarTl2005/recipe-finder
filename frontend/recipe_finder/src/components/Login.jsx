@@ -48,7 +48,7 @@ const Login = () => {
 
   return (
     <>
-      <form method='POST' onSubmit={handleSubmit} className='w-full h-screen flex-col flex items-center justify-center gap-4 text-black'>
+      <form method='POST' onSubmit={handleSubmit} className='w-full h-screen flex-col flex items-center justify-center gap-4'>
         {
           showError ? 
           <div className='bg-red-500 text-white p-2 rounded absolute top-3 w-[30%] flex transition-all duration-200'>
@@ -73,7 +73,7 @@ const Login = () => {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
-          className='border-2 border-blue-300/80 rounded p-2 w-1/4 bg-gray-200'
+          className='text-black border-2 border-blue-300/80 rounded p-2 w-1/4 bg-gray-200'
         />
         <input 
           id='password'
@@ -82,7 +82,7 @@ const Login = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
-          className='border-2 border-blue-300/80 rounded p-2 w-1/4 bg-gray-200'
+          className='text-black border-2 border-blue-300/80 rounded p-2 w-1/4 bg-gray-200'
         />
         <button className='bg-blue-500 px-3 py-2 rounded text-white' type='submit'>Login</button>
         <div className='flex flex-col items-center justify-center'>

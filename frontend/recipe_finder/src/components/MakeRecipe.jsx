@@ -12,7 +12,7 @@ const MakeRecipe = () => {
   const [showError, setShowError] = useState(false);
   const [success, setSuccess] = useState(null);
   const [showSuccess, setShowSuccess] = useState(false);
-  const [content, setContent] = useState('');
+  const [content, setContent] = useState([""]);
   const [ingredients, setIngredients] = useState([""]); // State for ingredients
 
   const handleSubmit = async (e) => {
@@ -22,7 +22,6 @@ const MakeRecipe = () => {
       formData.append('title', title);
       formData.append('description', description);
       formData.append('cuisine', cuisine);
-      formData.append('content', content);
       formData.append('file', file);
 
       // Send recipe data to make-recipe route
@@ -35,18 +34,26 @@ const MakeRecipe = () => {
 
       // Extract the recipe ID from the response
       const recipeId = response.data.recipeId;
-      // Send each ingredient to add-ingredient route
-      for (const ingredient of ingredients) {
-        await axios.post('http://localhost:5000/add-ingredient', { ingredient, recipeId }, {withCredentials: true});
-      }
+      const data = new FormData();
+      data.append('recipeId', recipeId);
+
+      content.forEach((instruction) => {
+        data.append('instruction', instruction);
+      });
+
+      ingredients.forEach((ingredient) => {
+        data.append('ingredient', ingredient);
+      });
+      console.log(data.getAll('ingredient'));
+      await axios.post('http://localhost:5000/add-ingredient', data, {withCredentials: true});
 
       // Show success message
       setSuccess('Recipe submitted successfully');
       setShowSuccess(true);
 
-      setTimeout(() => {
-        window.location.reload();
-      }, 1000);
+      //setTimeout(() => {
+      //  window.location.reload();
+     // }, 1000);
       
     } catch (error) {
       console.error(error.response.data.error);
@@ -69,10 +76,20 @@ const MakeRecipe = () => {
     setIngredients([...ingredients, ""]); // Add a new empty ingredient
   };
 
+  const handleAddContent = () => {
+    setContent([...content, ""]); // Add a new empty ingredient
+  };
+
   const handleChangeIngredient = (index, value) => {
     const newIngredients = [...ingredients];
     newIngredients[index] = value; // Update the ingredient at the specified index
     setIngredients(newIngredients);
+  };
+
+  const handleChangeContent = (index, value) => {
+    const newContent = [...content];
+    newContent[index] = value; // Update the ingredient at the specified index
+    setContent(newContent);
   };
 
   const handleRemoveIngredient = (index) => {
@@ -82,6 +99,15 @@ const MakeRecipe = () => {
       setIngredients(newIngredients);
     }
   };
+
+  const handleRemoveContent = (index) => {
+    if (content.length > 1) {
+      const newContent = [...content];
+      newContent.splice(index, 1); // Remove the ingredient at the specified index
+      setContent(newContent);
+    }
+  };
+
 
   return (
     <form className='w-full h-auto flex-col flex items-center justify-center gap-4 mb-[40px]text-black' method='POST' onSubmit={handleSubmit}>
@@ -119,15 +145,6 @@ const MakeRecipe = () => {
             required
             className='border-2 border-blue-300/80 rounded p-2 w-[80%] h-[70px] text-center bg-gray-200'
           />
-          <textarea
-            name='instructions'
-            placeholder='Instructions (seprated by a new line)'
-            type='text'
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-            required
-            className='border-2 border-blue-300/80 rounded p-2 w-[80%] h-[350px] text-center flex bg-gray-200'
-          />
         </div>
         <div className='flex flex-col w-1/2 items-center justify-center gap-6 '>
           <input
@@ -149,6 +166,24 @@ const MakeRecipe = () => {
         </div>
       </div>
       <div className='w-[80%] h-auto self-center flex flex-col items-center z-10 text-black gap-2'>
+        <h1 className='text-2xl font-madimi text-white'>Instructions:</h1>
+        <div className='w-full h-auto self-center flex flex-col items-center z-10 text-black gap-2'>
+              {content.map((content, index) => (
+                <div key={index} className="w-[80%] h-full flex items-center justify-center gap-2">
+                  <button onClick={handleAddContent}><FaPlusSquare className='text-2xl text-white' /></button>
+                  <input
+                    placeholder='Instruction'
+                    type='text'
+                    value={content}
+                    onChange={(e) => handleChangeContent(index, e.target.value)}
+                    required
+                    className='border-2 border-blue-300/80 rounded p-2 w-[60%] text-center bg-gray-200'
+                  />
+                  <button onClick={() => handleRemoveContent(index)}><FaWindowClose className='text-red-600 text-2xl' /></button>
+                </div>
+              ))}
+           </div>
+        <h1 className='text-2xl font-madimi text-white'>Ingredients:</h1>
         {ingredients.map((ingredient, index) => (
           <div key={index} className="w-[80%] h-full flex items-center justify-center gap-2">
             <button onClick={handleAddIngredient}><FaPlusSquare className='text-2xl text-white' /></button>

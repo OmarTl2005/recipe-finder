@@ -56,7 +56,6 @@ class Recipe(db.Model):
     cuisine = db.Column(db.String(128))
     rating = db.Column(db.Float)
     favorite = db.Column(db.Boolean)
-    content = db.Column(db.Text)
     filename = db.Column(db.String(255), unique=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     ingredients = db.relationship('Ingredient', backref='recipe', lazy='dynamic')
@@ -69,6 +68,7 @@ class Ingredient(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     ingredient = db.Column(db.Text)
+    instructions = db.Column(db.Text)
     recipe_id = db.Column(db.Integer, db.ForeignKey('recipe.id'))
 
     def __repr__(self):
@@ -209,9 +209,8 @@ def make_recipe():
                 title = request.form.get('title')
                 description = request.form.get('description')
                 cuisine = request.form.get('cuisine')
-                content = request.form.get('content')
                 # ... (rest of your recipe creation logic)
-                new_recipe = Recipe(title=title, description=description, cuisine=cuisine, content=content, filename=filename, user_id=current_user.id)
+                new_recipe = Recipe(title=title, description=description, cuisine=cuisine, filename=filename, user_id=current_user.id)
                 # ... (save new_recipe to database)
                 db.session.add(new_recipe)
                 db.session.commit()
@@ -280,7 +279,6 @@ def recipe(id):
         return jsonify([{'id': recipe.id,
                          'title': recipe.title,
                          'description': recipe.description,
-                         'content': recipe.content,
                          'rating': recipe.rating,
                          'cuisine': recipe.cuisine,
                          'filename': f'{recipe.filename}'} for recipe in recipes]), 200
@@ -316,21 +314,24 @@ def rate_recipe(recipe_id):
 @login_required
 def add_ingredient():
     try:
-        data = request.json
-        ingredient = data.get('ingredient')
-        recipe_id = data.get('recipeId')
-        new_ingredient = Ingredient(ingredient=ingredient, recipe_id=recipe_id)
-        db.session.add(new_ingredient)
+        ingredient = request.form.getlist('ingredient')
+        instruction = request.form.getlist('instruction')
+        recipe_id = request.form.get('recipeId')
+        
+        for i in range(len(ingredient)):
+            new_ingredient = Ingredient(ingredient=ingredient[i], instructions=instruction[i], recipe_id=recipe_id)
+            db.session.add(new_ingredient)
+        
         db.session.commit()
-        return jsonify({'message': 'Ingredient added successfully'}), 200
+        return jsonify({'message': 'Ingredients added successfully'}), 200
     except:
-        return jsonify({'error': 'An error occurred while adding the ingredient'}), 500
+        return jsonify({'error': 'An error occurred while adding the ingredients'}), 500
 
 @app.route('/ingredients/<int:recipe_id>')
 def ingredients(recipe_id):
     try:
         my_ingredients = Ingredient.query.filter_by(recipe_id=recipe_id).all()
-        ingredient_list = [{'id': ingredient.id, 'ingredient': ingredient.ingredient} for ingredient in my_ingredients]
+        ingredient_list = [{'id': ingredient.id, 'ingredient': ingredient.ingredient, 'instruction': ingredient.instructions} for ingredient in my_ingredients]
         return jsonify(ingredient_list), 200
     except:
         return jsonify({'error': 'An error occurred while fetching ingredients'}), 500

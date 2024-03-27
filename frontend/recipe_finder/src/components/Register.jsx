@@ -51,7 +51,7 @@ const Register = () => {
 
   return (
     <>
-      <form onSubmit={handleSubmit} className='w-full h-screen text-black flex-col flex items-center justify-center gap-4 transition-all duration-300'>
+      <form onSubmit={handleSubmit} className='w-full h-screen flex-col flex items-center justify-center gap-4 transition-all duration-300'>
         {
             showError ? 
             <div className='bg-red-500 text-white p-2 rounded absolute top-3 w-[20%] flex transition-all duration-200'>
@@ -76,7 +76,7 @@ const Register = () => {
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           required
-          className='border-2 border-blue-300/80 rounded p-2 w-1/4 bg-gray-200'
+          className='text-black border-2 border-blue-300/80 rounded p-2 w-1/4 bg-gray-200'
           />
         <input
           id='email'
@@ -85,7 +85,7 @@ const Register = () => {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
-          className='border-2 border-blue-300/80 rounded p-2 w-1/4 bg-gray-200'
+          className='text-black border-2 border-blue-300/80 rounded p-2 w-1/4 bg-gray-200'
         />
         <input 
           id='password'
@@ -94,7 +94,7 @@ const Register = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
-          className='border-2 border-blue-300/80 rounded p-2 w-1/4 bg-gray-200'
+          className='text-black border-2 border-blue-300/80 rounded p-2 w-1/4 bg-gray-200'
         />
         <button className='bg-blue-500 px-3 py-2 rounded text-white' type='submit'>Register</button>
         <div className='flex flex-col items-center justify-center'>
