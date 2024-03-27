@@ -4,7 +4,7 @@ import { IoSend } from "react-icons/io5";
 import { MdOutlineDeleteForever } from "react-icons/md";
 
 
-const Comments = ({ recipeId, url }) => {
+const Comments = ({ recipeId }) => {
     const [comments, setComments] = useState(null);
     const [newComment, setNewComment] = useState('');
     const [user, setUser] = useState(null);
@@ -13,7 +13,7 @@ const Comments = ({ recipeId, url }) => {
     useEffect(() => {
         const getComments = async () => {
             try {
-                const response = await axios.get(`${url}/comments/${recipeId}`);
+                const response = await axios.get(`https://recipe-finder-backend-1.onrender.com/comments/${recipeId}`);
                 setComments(response.data);
             } catch(error) {
                 console.error('Error fetching comments:', error);
@@ -22,7 +22,7 @@ const Comments = ({ recipeId, url }) => {
 
         const getUser = async () => {
             try {
-                const response = await axios.get(`${url}/get-user`, { withCredentials: true });
+                const response = await axios.get(`https://recipe-finder-backend-1.onrender.com/get-user`, { withCredentials: true });
                 setUser(response.data);
             } catch (error) {
                 console.error('Error fetching user:', error);
@@ -31,11 +31,11 @@ const Comments = ({ recipeId, url }) => {
 
         getUser();
         getComments();
-    }, [recipeId, url]);
+    }, [recipeId]);
 
     const handleComment = async () => {
         try {
-            await axios.post(`${url}/add-comment/${recipeId}`, { 'comment': newComment }, { withCredentials: true });
+            await axios.post(`https://recipe-finder-backend-1.onrender.com/add-comment/${recipeId}`, { 'comment': newComment }, { withCredentials: true });
         } catch (error) {
             console.error('Error submitting comment:', error);
         }
@@ -43,7 +43,7 @@ const Comments = ({ recipeId, url }) => {
 
     const deleteComment = async (commentId) => {
         try {
-            await axios.delete(`${url}/delete-comment/${commentId}`, { withCredentials: true });
+            await axios.delete(`https://recipe-finder-backend-1.onrender.com/delete-comment/${commentId}`, { withCredentials: true });
             setComments(comments.filter(comment => comment.id !== commentId));
         } catch (error) {
             console.error('Error deleting comment:', error);

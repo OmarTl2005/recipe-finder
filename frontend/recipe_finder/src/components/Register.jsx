@@ -3,7 +3,7 @@ import { AiFillCloseCircle } from "react-icons/ai";
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 
-const Register = ({ url }) => {
+const Register = () => {
     const [username, setUsername] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -16,7 +16,7 @@ const Register = ({ url }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post(`${url}/register`, {
+            const response = await axios.post(`https://recipe-finder-backend-1.onrender.com/register`, {
             'username': username,
             'email': email,
             'password': password,

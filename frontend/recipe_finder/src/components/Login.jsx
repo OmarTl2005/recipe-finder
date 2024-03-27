@@ -4,7 +4,7 @@ import { AiFillCloseCircle } from "react-icons/ai";
 import { useNavigate } from 'react-router-dom';
 
 
-const Login = ({ url }) => {
+const Login = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [error, setError] = useState(null)
@@ -16,7 +16,7 @@ const Login = ({ url }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post(`${url}/login`, {
+            const response = await axios.post(`https://recipe-finder-backend-1.onrender.com/login`, {
               'email': email,
               'password': password
             }, {withCredentials: true});

@@ -2,18 +2,19 @@ import { useState, useEffect, useMemo } from 'react';
 import axios from 'axios';
 import Filter from './Filter';
 import { GoHeart, GoHeartFill } from "react-icons/go";
+import React from 'react';
 
-const Main = ({ url }) => {
+const Main = () => {
   const [recipes, setRecipes] = useState([]);
   const [search, setSearch] = useState('');
   const [close, setClose] = useState(true);
   const [select, setSelect] = useState(null);
   const [rating, setRating] = useState(null);
-
+  
   useEffect(() => {
     const getRecipes = async () => {
       try {
-        const response = await axios.get(`${url}`, { withCredentials: true });
+        const response = await axios.get(`https://recipe-finder-backend-1.onrender.com`, { withCredentials: true });
         setRecipes(response.data.map(recipe => ({ ...recipe })));
       } catch (error) {
         console.error(error.response?.data?.error || 'Error fetching recipes');
@@ -21,7 +22,7 @@ const Main = ({ url }) => {
     };
 
     getRecipes();
-  }, [url]);
+  }, []);
 
   const cuisine = useMemo(() => {
     return [...new Set(recipes.map((recipe) => recipe.cuisine))];
@@ -68,7 +69,7 @@ const Main = ({ url }) => {
       const updatedRecipe = recipes.find(recipe => recipe.id === recipeId);
       const isFavorite = updatedRecipe.favorite;
   
-      await axios.put(`${url}/favorite/${recipeId}`, {
+      await axios.put(`https://recipe-finder-backend-1.onrender.com'/favorite/'${recipeId}`, {
         is_favorite: !isFavorite ? 'true' : 'false'
       }, { withCredentials: true });
   
@@ -88,7 +89,7 @@ const Main = ({ url }) => {
                 <button onClick={(e) => {e.preventDefault(); handleFavorite(recipe.id)}}>
                   {recipe.favorite ? <GoHeartFill className='text-red-600 text-[32px] absolute top-5 left-5 transition-all duration-200 ease-in-out' /> : <GoHeart className='transition-all duration-200 ease-in-out text-red-600 text-[32px] absolute top-5 left-5' />}
                 </button>
-                <img className='rounded-full w-[200px] h-[200px]' width='200px' height='200px' src={`${url}/uploads/${recipe.filename}`} alt={recipe.title} />
+                <img className='rounded-full w-[200px] h-[200px]' width='200px' height='200px' src={`https://recipe-finder-backend-1.onrender.com'/uploads/'${recipe.filename}`} alt={recipe.title} />
                 <h1 className='mt-5'>{recipe.title}</h1>
               </li>
             </a>

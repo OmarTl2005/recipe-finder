@@ -3,7 +3,7 @@ import axios from 'axios';
 import { AiFillCloseCircle } from "react-icons/ai";
 import { FaPlusSquare, FaWindowClose } from "react-icons/fa";
 
-const MakeRecipe = ({ url }) => {
+const MakeRecipe = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [cuisine, setCuisine] = useState('');
@@ -32,7 +32,7 @@ const MakeRecipe = ({ url }) => {
       });
   
       // Send recipe data to make-recipe route
-      const response = await axios.post(`${url}/make-recipe`, formData, {
+      const response = await axios.post(`https://recipe-finder-backend-1.onrender.com/make-recipe`, formData, {
         withCredentials: true,
         headers: {
           'Content-Type': 'multipart/form-data', // Add this header

@@ -2,13 +2,13 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Logout from './Logout';
 
-const Nav = ({ url }) => {
+const Nav = () => {
   const [loggedin, setLoggedin] = useState(false);
 
   useEffect(() => {
     const checkLogin = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/login', { withCredentials: true });
+        const response = await axios.get('https://recipe-finder-backend-1.onrender.com/login', { withCredentials: true });
         if (response.status === 200) {
           setLoggedin(true);
         } 
@@ -23,7 +23,7 @@ const Nav = ({ url }) => {
   return (
     <div className='flex self-end justify-between w-full h-1/5 m-0 p-0'>
       <div className='flex items-center gap-4 w-[40%] pl-8 py-4 hover:-translate-y-2 transition-all duration-500'>
-        <a className='' href='/'><img width='100' height='100' src={`${url}/media/recipe-finder.png`} alt='recipe finder logo' /></a>
+        <a className='' href='/'><img width='100' height='100' src={`https://recipe-finder-backend-1.onrender.com/media/recipe-finder.png`} alt='recipe finder logo' /></a>
         <a href='/'><h1 className='text-transparent bg-clip-text bg-gradient-to-br from-darkPink to-darkBlue text-3xl font-madimi'>Recipe Finder</h1></a>
       </div>
       <div className='w-2/3 flex justify-around'>

@@ -4,7 +4,7 @@ import axios from 'axios';
 import { AiFillCloseCircle } from "react-icons/ai";
 
 
-const Logout = ({ url }) => {
+const Logout = () => {
     const [success, setSuccess] = useState(null);
     const [showSuccess, setShowSuccess] = useState(false);
     const [error, setError] = useState(null);
@@ -15,7 +15,7 @@ const Logout = ({ url }) => {
     const handleLogout = async (e) => {
         e.preventDefault();
         try {
-          const response = await axios.get(`${url}/logout`, {withCredentials: true});
+          const response = await axios.get(`https://recipe-finder-backend-1.onrender.com/logout`, {withCredentials: true});
           console.log(response.data.message);
           setSuccess(response.data.message);
           setShowSuccess(true);

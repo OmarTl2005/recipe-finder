@@ -5,7 +5,7 @@ import { GoHeart, GoHeartFill } from "react-icons/go";
 import { MdDeleteForever } from "react-icons/md";
 
 
-const ShowRecipe = ({ url }) => {
+const ShowRecipe = () => {
   const [recipes, setRecipes] = useState([]);
   const [search, setSearch] = useState('');
   const [close, setClose] = useState(true);
@@ -16,7 +16,7 @@ const ShowRecipe = ({ url }) => {
   useEffect(() => {
     const getRecipes = async () => {
       try {
-        const response = await axios(`${url}/recipes`, { withCredentials: true });
+        const response = await axios(`https://recipe-finder-backend-1.onrender.com/recipes`, { withCredentials: true });
         setRecipes(response.data.map(recipe => ({ ...recipe })));
         console.log(response.data)
       } catch (error) {
@@ -25,11 +25,11 @@ const ShowRecipe = ({ url }) => {
     };
 
     getRecipes();
-  }, [url]);
+  }, []);
 
   const handleDeleteRecipe = async (recipeId) => {
     try {
-      const response = await axios.delete(`${url}/recipes/${recipeId}`, { withCredentials: true });
+      const response = await axios.delete(`https://recipe-finder-backend-1.onrender.com/recipes/${recipeId}`, { withCredentials: true });
       if (response.status === 200) {
         console.log('Recipe deleted successfully!');
         window.location.reload();
@@ -84,7 +84,7 @@ const ShowRecipe = ({ url }) => {
       const updatedRecipe = recipes.find(recipe => recipe.id === recipeId);
       const isFavorite = updatedRecipe.favorite;
   
-      await axios.put(`${url}/favorite/${recipeId}`, {
+      await axios.put(`https://recipe-finder-backend-1.onrender.com/favorite/${recipeId}`, {
         is_favorite: !isFavorite ? 'true' : 'false'
       }, { withCredentials: true });
   
@@ -107,7 +107,7 @@ const ShowRecipe = ({ url }) => {
                     <button onClick={(e) => {e.preventDefault(); handleFavorite(recipe.id)}}>
                       {recipe.favorite ? <GoHeartFill className='text-red-600 text-[32px] absolute top-5 left-5 transition-all duration-200 ease-in-out' /> : <GoHeart className='transition-all duration-200 ease-in-out text-red-600 text-[32px] absolute top-5 left-5' />}
                     </button>
-                    <img className='rounded-full w-[200px] h-[200px]' src={`${url}/uploads/${recipe.filename}`} alt={recipe.title} />
+                    <img className='rounded-full w-[200px] h-[200px]' src={`https://recipe-finder-backend-1.onrender.com/uploads/${recipe.filename}`} alt={recipe.title} />
                     <h1 className='mt-5'>{recipe.title}</h1>
                     <button className='absolute top-4 right-4 text-4xl text-red-600 z-100' onClick={(e) => {e.preventDefault(); handleDeleteRecipe(recipe.id);}}><MdDeleteForever /></button>
                   </li>
