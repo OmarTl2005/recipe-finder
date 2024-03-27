@@ -114,7 +114,7 @@ const ShowRecipe = () => {
             ))}
           </ul>
         ) : (
-          <p>Loading recipes...</p>
+          <p>No recipe found :/</p>
         )}
       </div>
       

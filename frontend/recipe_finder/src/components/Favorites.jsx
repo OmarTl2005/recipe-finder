@@ -97,7 +97,7 @@ const ShowRecipe = () => {
   return (
     <div className='flex flex-col items-center justify-between h-full w-full self-center'>
       <div className='flex flex-col items-center gap-y-10 flex-wrap'>
-        <h1 className='font-madimi text-3xl text-transparent bg-clip-text bg-gradient-to-b from-red-600 to-red-600 mt-7'>My favorites:</h1>
+        <h1 className='font-madimi text-3xl text-transparent bg-clip-text bg-gradient-to-br from-red-300 to-red-600 mt-7'>My favorites:</h1>
         {filteredRecipes.length > 0 ? (
             <ul className='flex text-center justify-center flex-wrap w-full h-full gap-[100px] max-h-[100px]'> 
               {filteredRecipes.map((recipe) => (
@@ -116,7 +116,7 @@ const ShowRecipe = () => {
               ))}
             </ul>
             ) : (
-              <p>Loading recipes...</p>
+              <p>No favorite recipe found :/</p>
             )}
       </div>
       
