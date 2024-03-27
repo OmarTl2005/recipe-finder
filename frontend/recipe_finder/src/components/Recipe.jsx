@@ -6,7 +6,7 @@ import { AiOutlineLoading3Quarters } from 'react-icons/ai';
 import Comments from './Comments';
 
 
-const Recipe = () => {
+const Recipe = ({ url }) => {
   const { id } = useParams();
   const [recipe, setRecipe] = useState();
   const [rating, setRating] = useState(null);
@@ -15,7 +15,7 @@ const Recipe = () => {
   useEffect(() => {
     const getContent = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/recipe/${id}`);
+        const response = await axios.get(`${url}/recipe/${id}`);
         setRecipe(response.data[0]);
         setRating(response.data[0]?.rating || null); // Initialize rating with the value from the backend
       } catch (error) {
@@ -26,16 +26,16 @@ const Recipe = () => {
     getContent();
 
     const getIngreidents = async () => {
-      const response = await axios.get(`http://localhost:5000/ingredients/${id}`);
+      const response = await axios.get(`${url}/ingredients/${id}`);
       setIngredients(response.data);
     }
 
     getIngreidents();
-  }, [id]);
+  }, [id, url]);
 
   const handleRate = async (newRating) => {
     try {
-      await axios.post(`http://localhost:5000/rating/${id}`, { 'rating': newRating }, { withCredentials: true });
+      await axios.post(`${url}/rating/${id}`, { 'rating': newRating }, { withCredentials: true });
       console.log('Rating submitted successfully!');
     } catch (error) {
       console.error('Error submitting rating:', error);
@@ -59,7 +59,7 @@ const Recipe = () => {
                 </div>
             </div>
             <div className='w-1/2 flex flex-col items-center gap-5 justify-center'>
-              <img alt='recipe' className='rounded-3xl h-[400px] w-[400px]' src={`http://localhost:5000/uploads/${recipe.filename}`}></img>
+              <img alt='recipe' className='rounded-3xl h-[400px] w-[400px]' src={`${url}/uploads/${recipe.filename}`}></img>
               <h1 className='text-xl font-madimi'>Cuisine: {recipe.cuisine}</h1>
               <div className='flex'>
                 {

@@ -4,7 +4,7 @@ import { AiFillCloseCircle } from "react-icons/ai";
 import { useNavigate } from 'react-router-dom';
 
 
-const Login = () => {
+const Login = ({ url }) => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [error, setError] = useState(null)
@@ -16,7 +16,7 @@ const Login = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:5000/login', {
+            const response = await axios.post(`${url}/login`, {
               'email': email,
               'password': password
             }, {withCredentials: true});

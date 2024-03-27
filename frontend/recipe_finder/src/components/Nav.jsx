@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Logout from './Logout';
 
-const Nav = () => {
+const Nav = ({ url }) => {
   const [loggedin, setLoggedin] = useState(false);
 
   useEffect(() => {
@@ -23,7 +23,7 @@ const Nav = () => {
   return (
     <div className='flex self-end justify-between w-full h-1/5 m-0 p-0'>
       <div className='flex items-center gap-4 w-[40%] pl-8 py-4 hover:-translate-y-2 transition-all duration-500'>
-        <a className='' href='/'><img width='100' height='100' src='http://localhost:5000/media/recipe-finder.png' alt='recipe finder logo' /></a>
+        <a className='' href='/'><img width='100' height='100' src={`${url}/media/recipe-finder.png`} alt='recipe finder logo' /></a>
         <a href='/'><h1 className='text-transparent bg-clip-text bg-gradient-to-br from-darkPink to-darkBlue text-3xl font-madimi'>Recipe Finder</h1></a>
       </div>
       <div className='w-2/3 flex justify-around'>

@@ -3,7 +3,7 @@ import { AiFillCloseCircle } from "react-icons/ai";
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 
-const Register = () => {
+const Register = ({ url }) => {
     const [username, setUsername] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -16,7 +16,7 @@ const Register = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:5000/register', {
+            const response = await axios.post(`${url}/register`, {
             'username': username,
             'email': email,
             'password': password,

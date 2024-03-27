@@ -10,19 +10,20 @@ import Recipe from "./components/Recipe";
 import Favorites from "./components/Favorites";
 
 function App() {
+  const url = 'http://10.214.129.166:5000'
   return (
     <div className="flex flex-col bg-bgBlue w-screen h-screen text-white m-0 p-0 overflow-y-scroll ">
       <BrowserRouter>
       <Nav className="w-full h-full p-0 m-0" />
         <Routes>
-          <Route path="/" element={<Main />}/>
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/logout" element={<Logout />} />
-          <Route path="/make-recipe" element={<MakeRecipe />} />
-          <Route path="/my-recipes" element={<ShowRecipe />} />
-          <Route path="/recipe/:id" element={<Recipe />} />
-          <Route path="/favorites" element={<Favorites />} />
+          <Route path="/" element={<Main url={url} />}/>
+          <Route path="/login" element={<Login url={url} />} />
+          <Route path="/register" element={<Register url={url} />} />
+          <Route path="/logout" element={<Logout url={url} />} />
+          <Route path="/make-recipe" element={<MakeRecipe url={url} />} />
+          <Route path="/my-recipes" element={<ShowRecipe url={url} />} />
+          <Route path="/recipe/:id" element={<Recipe url={url} />} />
+          <Route path="/favorites" element={<Favorites url={url} />} />
         </Routes>
       </BrowserRouter>
     </div>

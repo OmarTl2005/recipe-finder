@@ -3,7 +3,7 @@ import axios from 'axios';
 import Filter from './Filter';
 import { GoHeart, GoHeartFill } from "react-icons/go";
 
-const Main = () => {
+const Main = ({ url }) => {
   const [recipes, setRecipes] = useState([]);
   const [search, setSearch] = useState('');
   const [close, setClose] = useState(true);
@@ -13,7 +13,7 @@ const Main = () => {
   useEffect(() => {
     const getRecipes = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/', { withCredentials: true });
+        const response = await axios.get(`${url}`, { withCredentials: true });
         setRecipes(response.data.map(recipe => ({ ...recipe })));
       } catch (error) {
         console.error(error.response?.data?.error || 'Error fetching recipes');
@@ -21,7 +21,7 @@ const Main = () => {
     };
 
     getRecipes();
-  }, []);
+  }, [url]);
 
   const cuisine = useMemo(() => {
     return [...new Set(recipes.map((recipe) => recipe.cuisine))];
@@ -88,7 +88,7 @@ const Main = () => {
                 <button onClick={(e) => {e.preventDefault(); handleFavorite(recipe.id)}}>
                   {recipe.favorite ? <GoHeartFill className='text-red-600 text-[32px] absolute top-5 left-5 transition-all duration-200 ease-in-out' /> : <GoHeart className='transition-all duration-200 ease-in-out text-red-600 text-[32px] absolute top-5 left-5' />}
                 </button>
-                <img className='rounded-full w-[200px] h-[200px]' width='200px' height='200px' src={`http://localhost:5000/uploads/${recipe.filename}`} alt={recipe.title} />
+                <img className='rounded-full w-[200px] h-[200px]' width='200px' height='200px' src={`${url}/uploads/${recipe.filename}`} alt={recipe.title} />
                 <h1 className='mt-5'>{recipe.title}</h1>
               </li>
             </a>
