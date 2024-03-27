@@ -31,6 +31,7 @@ def load_user(user_id):
 
 # managin models
 class User(UserMixin, db.Model):
+
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(100), unique=True)
     email = db.Column(db.String(100), unique=True)
@@ -39,14 +40,16 @@ class User(UserMixin, db.Model):
 
     def __repr__(self):
         return f'<User {self.username}>'
-    
+
     def make_password(self, password):
         self.password = generate_password_hash(password)
-    
+
     def check_password(self, password):
         return check_password_hash(self.password, password)
 
+# Define Recipe model
 class Recipe(db.Model):
+
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(100))
     description = db.Column(db.Text)
@@ -56,18 +59,20 @@ class Recipe(db.Model):
     content = db.Column(db.Text)
     filename = db.Column(db.String(255), unique=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-    ingredients = db.relationship('ingredients', backref='recipe', lazy='dynamic')
+    ingredients = db.relationship('Ingredient', backref='recipe', lazy='dynamic')
 
     def __repr__(self):
         return f'<Recipe {self.title}>'
 
-class ingredients(db.Model):
+# Define Ingredient model
+class Ingredient(db.Model):
+
     id = db.Column(db.Integer, primary_key=True)
     ingredient = db.Column(db.Text)
     recipe_id = db.Column(db.Integer, db.ForeignKey('recipe.id'))
 
     def __repr__(self):
-        return f'<Ingredient {self.name}>'
+        return f'<Ingredient {self.id}>'
 
 # managing routes
 
@@ -314,23 +319,21 @@ def add_ingredient():
         data = request.json
         ingredient = data.get('ingredient')
         recipe_id = data.get('recipeId')
-        new_ingredient = ingredients(ingredient=ingredient, recipe_id=recipe_id)
+        new_ingredient = Ingredient(ingredient=ingredient, recipe_id=recipe_id)
         db.session.add(new_ingredient)
         db.session.commit()
         return jsonify({'message': 'Ingredient added successfully'}), 200
     except:
         return jsonify({'error': 'An error occurred while adding the ingredient'}), 500
 
-@app.route('/get-ingredients/<int:recipe_id>')
-@login_required
-def get_ingredients(recipe_id):
+@app.route('/ingredients/<int:recipe_id>')
+def ingredients(recipe_id):
     try:
-        ingredients = ingredients.query.filter_by(recipe_id=recipe_id).all()
-        return jsonify([{'id': ingredient.id,
-                         'ingredient': ingredient.ingredient} for ingredient in ingredients]), 200
+        my_ingredients = Ingredient.query.filter_by(recipe_id=recipe_id).all()
+        ingredient_list = [{'id': ingredient.id, 'ingredient': ingredient.ingredient} for ingredient in my_ingredients]
+        return jsonify(ingredient_list), 200
     except:
         return jsonify({'error': 'An error occurred while fetching ingredients'}), 500
-
 
 if __name__ == '__main__':
     app.run(debug=True)

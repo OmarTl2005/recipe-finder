@@ -35,7 +35,6 @@ const MakeRecipe = () => {
 
       // Extract the recipe ID from the response
       const recipeId = response.data.recipeId;
-      console.log(recipeId)
       // Send each ingredient to add-ingredient route
       for (const ingredient of ingredients) {
         await axios.post('http://localhost:5000/add-ingredient', { ingredient, recipeId }, {withCredentials: true});
@@ -44,6 +43,10 @@ const MakeRecipe = () => {
       // Show success message
       setSuccess('Recipe submitted successfully');
       setShowSuccess(true);
+
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
       
     } catch (error) {
       console.error(error.response.data.error);
@@ -81,7 +84,7 @@ const MakeRecipe = () => {
   };
 
   return (
-    <form className='w-full h-auto flex-col flex items-center justify-center gap-4 mb-[40px]' method='POST' onSubmit={handleSubmit}>
+    <form className='w-full h-auto flex-col flex items-center justify-center gap-4 mb-[40px]text-black' method='POST' onSubmit={handleSubmit}>
       {showError ? (
         <div className='bg-red-500 text-white p-2 rounded absolute top-3 w-[30%] flex transition-all duration-200'>
           <p className='w-[90%]'>{error}!</p>
@@ -117,8 +120,8 @@ const MakeRecipe = () => {
             className='border-2 border-blue-300/80 rounded p-2 w-[80%] h-[70px] text-center bg-gray-200'
           />
           <textarea
-            name='content'
-            placeholder='Instructions'
+            name='instructions'
+            placeholder='Instructions (seprated by a new line)'
             type='text'
             value={content}
             onChange={(e) => setContent(e.target.value)}
