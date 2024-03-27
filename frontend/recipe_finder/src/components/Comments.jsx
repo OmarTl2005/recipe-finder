@@ -1,5 +1,8 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { IoSend } from "react-icons/io5";
+import { MdOutlineDeleteForever } from "react-icons/md";
+
 
 const Comments = ({ recipeId }) => {
     const [comments, setComments] = useState(null);
@@ -32,8 +35,7 @@ const Comments = ({ recipeId }) => {
 
     const handleComment = async () => {
         try {
-            const response = await axios.post(`http://localhost:5000/add-comment/${recipeId}`, { 'comment': newComment }, { withCredentials: true });
-            console.log(response.data);
+            await axios.post(`http://localhost:5000/add-comment/${recipeId}`, { 'comment': newComment }, { withCredentials: true });
         } catch (error) {
             console.error('Error submitting comment:', error);
         }
@@ -41,38 +43,42 @@ const Comments = ({ recipeId }) => {
 
     const deleteComment = async (commentId) => {
         try {
-            const response = await axios.delete(`http://localhost:5000/delete-comment/${commentId}`, { withCredentials: true });
-            console.log(response.data);
+            await axios.delete(`http://localhost:5000/delete-comment/${commentId}`, { withCredentials: true });
+            setComments(comments.filter(comment => comment.id !== commentId));
         } catch (error) {
             console.error('Error deleting comment:', error);
         }
     }
 
   return (
-    <div className='w-full mt-10 flex flex-col items-center'>
+    <div className='w-[80%] mt-[70px] flex flex-col items-center gap-y-10 min-h-[25rem] rounded-3xl font-madimi transition-all duration-500'>
+        <h1 className='font-madimi text-3xl'>Comments:</h1>
+        <div className='w-full self-start'>
         {
-            comments ? (
-                <p>{comments.map((comment) => {
+            comments.length > 0 ? (
+                <div className='flex flex-col w-full h-full gap-4'>{comments.map((comment) => {
                     return (
-                        <>
-                          <p>{comment.username}</p>
-                          <p>{comment.comment}</p>
+                        <div className='bg-gradient-to-br flex flex-col relative w-full h-full from-lightBlue/30 to-darkBlue/30 rounded-full'>
+                          <p className='w-full ml-5 text-2xl'>{comment.username} says:</p>
+                          <p className='w-[93%] self-end text-2xl'>{comment.comment}</p>
                           {
                                 user && user.username === comment.username ? (
-                                    <button onClick={() => deleteComment(comment.id)}>Delete</button>
+                                    <button className='text-3xl absolute top-4 right-5 text-red-500' onClick={() => deleteComment(comment.id)}><MdOutlineDeleteForever /></button>
                                 ) : null
                           }
-                        </>
+                        </div>
                     )
-                })}</p>
+                })}</div>
             ) : 
             (
-            <p>No Comments</p>
+            <p className='text-2xl font-madimi'>No Comments</p>
             )
         }
-        <form>
-            <input className='text-black' onChange={(e) => setNewComment(e.target.value)} type='text' placeholder='Enter your comment' />
-            <button onClick={handleComment}>Comment</button>
+        </div>
+        <form className='flex w-full items-center h-full justify-center text-center gap-x-10'>
+            <input className='text-black text-center rounded-xl w-[400px] h-[100px]' onChange={(e) => setNewComment(e.target.value)} required type='text' placeholder='Enter your comment' />
+            <button onClick={handleComment}><IoSend className='text-2xl text-blue-400' /></button>
+            
         </form>
     </div>
   )
