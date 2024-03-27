@@ -29,6 +29,15 @@ const Comments = ({ recipeId }) => {
         }
     }
 
+    const deleteComment = async (commentId, username) => {
+        try {
+            const response = await axios.delete(`http://localhost:5000/delete-comment/${commentId}`, { withCredentials: true });
+            console.log(response.data);
+        } catch (error) {
+            console.error('Error deleting comment:', error);
+        }
+    }
+
   return (
     <div className='w-full mt-10 flex flex-col items-center'>
         {
@@ -38,6 +47,7 @@ const Comments = ({ recipeId }) => {
                         <>
                           <p>{comment.username}</p>
                           <p>{comment.comment}</p>
+                          <button>Delete Comment</button>
                         </>
                     )
                 })}</p>

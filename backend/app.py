@@ -344,6 +344,7 @@ def ingredients(recipe_id):
         return jsonify({'error': 'An error occurred while fetching ingredients'}), 500
 
 @app.route('/add-comment/<int:recipe_id>', methods=['POST'])
+@login_required
 def add_comment(recipe_id):
     try:
         data = request.json
@@ -366,6 +367,7 @@ def comments(recipe_id):
         return jsonify({'error': 'An error occurred while fetching comments'}), 500
 
 @app.route('/delete-comment/<int:comment_id>', methods=['DELETE'])
+@login_required
 def delete_comment(comment_id):
     try:
         comment = Comments.query.get(comment_id)
@@ -376,6 +378,11 @@ def delete_comment(comment_id):
         return jsonify({'message': 'Comment deleted successfully'}), 200
     except:
         return jsonify({'error': 'An error occurred while deleting comment'}), 500
+
+@app.route('/get-user')
+@login_required
+def get_user():
+    return jsonify({'username': current_user.username}), 200
 
 if __name__ == '__main__':
     app.run(debug=True)
