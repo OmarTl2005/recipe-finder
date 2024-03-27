@@ -59,13 +59,13 @@ class Recipe(db.Model):
     filename = db.Column(db.String(255), unique=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
     ingredients = db.relationship('Ingredient', backref='recipe', lazy='dynamic')
+    comments = db.relationship('Comments', backref='recipe', lazy='dynamic')
 
     def __repr__(self):
         return f'<Recipe {self.title}>'
 
 # Define Ingredient model
 class Ingredient(db.Model):
-
     id = db.Column(db.Integer, primary_key=True)
     ingredient = db.Column(db.Text)
     instructions = db.Column(db.Text)
@@ -73,6 +73,14 @@ class Ingredient(db.Model):
 
     def __repr__(self):
         return f'<Ingredient {self.id}>'
+
+class Comments(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    comment = db.Column(db.Text)
+    recipe_id = db.Column(db.Integer, db.ForeignKey('recipe.id'))
+
+    def __repr__(self):
+        return f'<Comment {self.id}>'
 
 # managing routes
 
@@ -333,6 +341,27 @@ def ingredients(recipe_id):
         return jsonify(ingredient_list), 200
     except:
         return jsonify({'error': 'An error occurred while fetching ingredients'}), 500
+
+@app.route('/add-comment/<int:recipe_id>', methods=['POST'])
+def add_comment(recipe_id):
+    try:
+        data = request.json
+        comment = data.get('comment')
+        new_comment = Comments(comment=comment, recipe_id=recipe_id)
+        db.session.add(new_comment)
+        db.session.commit()
+        return jsonify({'message': 'Comment added successfully'}), 200
+    except:
+        return jsonify({'error': 'An error occurred while adding comment'}), 500
+
+@app.route('/comments/<int:recipe_id>')
+def comments(recipe_id):
+    try:
+        my_comments = Comments.query.filter_by(recipe_id=recipe_id).all()
+        comment_list = [{'id': comment.id, 'comment': comment.comment} for comment in my_comments]
+        return jsonify(comment_list), 200
+    except:
+        return jsonify({'error': 'An error occurred while fetching comments'}), 500
 
 if __name__ == '__main__':
     app.run(debug=True)
