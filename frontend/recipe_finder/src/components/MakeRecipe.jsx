@@ -14,6 +14,8 @@ const MakeRecipe = () => {
   const [showSuccess, setShowSuccess] = useState(false);
   const [content, setContent] = useState([""]);
   const [ingredients, setIngredients] = useState([""]);
+  const url = "http://localhost:5000"
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -32,7 +34,7 @@ const MakeRecipe = () => {
       });
   
       // Send recipe data to make-recipe route
-      const response = await axios.post(`https://recipe-finder-backend-1.onrender.com/make-recipe`, formData, {
+      const response = await axios.post(`${url}/make-recipe`, formData, {
         withCredentials: true,
         headers: {
           'Content-Type': 'multipart/form-data', // Add this header
@@ -128,7 +130,6 @@ const MakeRecipe = () => {
         type='text'
         value={title}
         onChange={(e) => setTitle(e.target.value)}
-        required
         className='border-2 border-blue-300/80 text-black rounded p-2 w-1/4 bg-gray-200'
         maxLength={50}
       />
@@ -140,7 +141,6 @@ const MakeRecipe = () => {
             type='text'
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            required
             className='border-2 border-blue-300/80 rounded p-2 w-[80%] h-[70px] text-center bg-gray-200'
           />
         </div>
@@ -158,7 +158,6 @@ const MakeRecipe = () => {
             type='text'
             value={cuisine}
             onChange={(e) => setCuisine(e.target.value)}
-            required
             className='border-2 border-blue-300/80 rounded p-2 w-[60%] text-center bg-gray-200'
           />
         </div>
@@ -174,7 +173,6 @@ const MakeRecipe = () => {
                     type='text'
                     value={content}
                     onChange={(e) => handleChangeContent(index, e.target.value)}
-                    required
                     className='border-2 border-blue-300/80 rounded p-2 w-[60%] text-center bg-gray-200'
                   />
                   <button onClick={() => handleRemoveContent(index)}><FaWindowClose className='text-red-600 text-2xl' /></button>
@@ -190,7 +188,6 @@ const MakeRecipe = () => {
               type='text'
               value={ingredient}
               onChange={(e) => handleChangeIngredient(index, e.target.value)}
-              required
               className='border-2 border-blue-300/80 rounded p-2 w-[60%] text-center bg-gray-200'
             />
             <button onClick={() => handleRemoveIngredient(index)}><FaWindowClose className='text-red-600 text-2xl' /></button>

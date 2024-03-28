@@ -10,12 +10,13 @@ const Logout = () => {
     const [error, setError] = useState(null);
     const [showError, setShowError] = useState(false);
     const navigate = useNavigate()
+    const url = "http://localhost:5000"
 
 
     const handleLogout = async (e) => {
         e.preventDefault();
         try {
-          const response = await axios.get(`https://recipe-finder-backend-1.onrender.com/logout`, {withCredentials: true});
+          const response = await axios.get(`${url}/logout`, {withCredentials: true});
           console.log(response.data.message);
           setSuccess(response.data.message);
           setShowSuccess(true);

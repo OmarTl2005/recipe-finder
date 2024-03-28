@@ -12,11 +12,13 @@ const Register = () => {
     const [success, setSuccess] = useState(null)
     const [showSuccess, setShowSuccess] = useState(false)
     const navigate = useNavigate()
+    const url = "http://localhost:5000"
+
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post(`https://recipe-finder-backend-1.onrender.com/register`, {
+            const response = await axios.post(`${url}/register`, {
             'username': username,
             'email': email,
             'password': password,

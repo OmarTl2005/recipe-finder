@@ -13,7 +13,7 @@ const Comments = ({ recipeId }) => {
     useEffect(() => {
         const getComments = async () => {
             try {
-                const response = await axios.get(`https://recipe-finder-backend-1.onrender.com/comments/${recipeId}`);
+                const response = await axios.get(`http://localhost:5000/comments/${recipeId}`);
                 setComments(response.data);
             } catch(error) {
                 console.error('Error fetching comments:', error);
@@ -22,7 +22,7 @@ const Comments = ({ recipeId }) => {
 
         const getUser = async () => {
             try {
-                const response = await axios.get(`https://recipe-finder-backend-1.onrender.com/get-user`, { withCredentials: true });
+                const response = await axios.get(`http://localhost:5000/get-user`, { withCredentials: true });
                 setUser(response.data);
             } catch (error) {
                 console.error('Error fetching user:', error);
@@ -35,7 +35,7 @@ const Comments = ({ recipeId }) => {
 
     const handleComment = async () => {
         try {
-            await axios.post(`https://recipe-finder-backend-1.onrender.com/add-comment/${recipeId}`, { 'comment': newComment }, { withCredentials: true });
+            await axios.post(`http://localhost:5000/add-comment/${recipeId}`, { 'comment': newComment }, { withCredentials: true });
         } catch (error) {
             console.error('Error submitting comment:', error);
         }
@@ -43,7 +43,7 @@ const Comments = ({ recipeId }) => {
 
     const deleteComment = async (commentId) => {
         try {
-            await axios.delete(`https://recipe-finder-backend-1.onrender.com/delete-comment/${commentId}`, { withCredentials: true });
+            await axios.delete(`http://localhost:5000/delete-comment/${commentId}`, { withCredentials: true });
             setComments(comments.filter(comment => comment.id !== commentId));
         } catch (error) {
             console.error('Error deleting comment:', error);
@@ -55,7 +55,7 @@ const Comments = ({ recipeId }) => {
         <h1 className='font-madimi text-3xl'>Comments:</h1>
         <div className='w-full self-start'>
         {
-            comments.length > 0 ? (
+            comments && comments.length > 0 ? (
                 <div className='flex flex-col w-full h-full gap-4'>{comments.map((comment) => {
                     return (
                         <div className='bg-gradient-to-br flex flex-col relative w-full h-full from-lightBlue/30 to-darkBlue/30 rounded-full'>

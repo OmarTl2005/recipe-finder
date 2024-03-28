@@ -12,11 +12,12 @@ const Login = () => {
     const [success, setSuccess] = useState(null)
     const [showSuccess, setShowSuccess] = useState(false)
     const navigate = useNavigate();
+    const url = "http://localhost:5000"
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post(`https://recipe-finder-backend-1.onrender.com/login`, {
+            const response = await axios.post(`${url}/login`, {
               'email': email,
               'password': password
             }, {withCredentials: true});
