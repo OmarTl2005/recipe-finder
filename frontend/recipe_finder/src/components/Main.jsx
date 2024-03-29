@@ -12,12 +12,13 @@ const Main = () => {
   const [rating, setRating] = useState(null);
   const url = "http://localhost:5000"
 
-  
+
   useEffect(() => {
     const getRecipes = async () => {
       try {
-        const response = await axios.get(`${url}`, { withCredentials: true });
+        const response = await axios(`${url}`, { withCredentials: true });
         setRecipes(response.data.map(recipe => ({ ...recipe })));
+        console.log(response.data)
       } catch (error) {
         console.error(error.response?.data?.error || 'Error fetching recipes');
       }
@@ -25,6 +26,7 @@ const Main = () => {
 
     getRecipes();
   }, []);
+
 
   const cuisine = useMemo(() => {
     return [...new Set(recipes.map((recipe) => recipe.cuisine))];
@@ -45,8 +47,6 @@ const Main = () => {
       );
     }
 
-    console.log(rating)
-
     if (rating) {
       filtered = filtered.filter((recipe) =>
         String(recipe.rating) === rating
@@ -54,7 +54,7 @@ const Main = () => {
     }
 
     return filtered;
-  }, [search, select, recipes, rating]);
+  }, [search, recipes, select, rating]);
 
   const handleFavorite = async (recipeId) => {
     try {
@@ -71,7 +71,7 @@ const Main = () => {
       const updatedRecipe = recipes.find(recipe => recipe.id === recipeId);
       const isFavorite = updatedRecipe.favorite;
   
-      await axios.put(`${url}/favorite/'${recipeId}`, {
+      await axios.put(`${url}/favorite/${recipeId}`, {
         is_favorite: !isFavorite ? 'true' : 'false'
       }, { withCredentials: true });
   

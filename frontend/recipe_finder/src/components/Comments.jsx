@@ -22,7 +22,7 @@ const Comments = ({ recipeId }) => {
 
         const getUser = async () => {
             try {
-                const response = await axios.get(`http://localhost:5000/get-user`, { withCredentials: true });
+                const response = await axios.get(`http://localhost:5000/get-user`, {withCredentials: true});
                 setUser(response.data);
             } catch (error) {
                 console.error('Error fetching user:', error);
@@ -35,7 +35,7 @@ const Comments = ({ recipeId }) => {
 
     const handleComment = async () => {
         try {
-            await axios.post(`http://localhost:5000/add-comment/${recipeId}`, { 'comment': newComment }, { withCredentials: true });
+            await axios.post(`http://localhost:5000/add-comment/${recipeId}`, { 'comment': newComment }, {withCredentials: true});
         } catch (error) {
             console.error('Error submitting comment:', error);
         }
@@ -43,7 +43,7 @@ const Comments = ({ recipeId }) => {
 
     const deleteComment = async (commentId) => {
         try {
-            await axios.delete(`http://localhost:5000/delete-comment/${commentId}`, { withCredentials: true });
+            await axios.delete(`http://localhost:5000/delete-comment/${commentId}`, {withCredentials: true});
             setComments(comments.filter(comment => comment.id !== commentId));
         } catch (error) {
             console.error('Error deleting comment:', error);
@@ -77,7 +77,7 @@ const Comments = ({ recipeId }) => {
         </div>
         <form className='flex w-full items-center h-full justify-center text-center gap-x-10'>
             <input className='text-black text-center rounded-xl w-[400px] h-[100px]' onChange={(e) => setNewComment(e.target.value)} required type='text' placeholder='Enter your comment' />
-            <button onClick={handleComment}><IoSend className='text-2xl text-blue-400' /></button>
+            <button onClick={handleComment} type='submit'><IoSend className='text-2xl text-blue-400' /></button>
             
         </form>
     </div>

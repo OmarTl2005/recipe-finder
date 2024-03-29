@@ -5,7 +5,7 @@ import { GoHeart, GoHeartFill } from "react-icons/go";
 import { MdDeleteForever } from "react-icons/md";
 
 
-const ShowRecipe = () => {
+const Favorites = () => {
   const [recipes, setRecipes] = useState([]);
   const [search, setSearch] = useState('');
   const [close, setClose] = useState(true);
@@ -127,4 +127,4 @@ const ShowRecipe = () => {
   );
 };
 
-export default ShowRecipe;
+export default Favorites;
