@@ -252,21 +252,24 @@ def delete_recipe(recipe_id):
         ingredients = Ingredient.query.filter_by(recipe_id=recipe_id).all()
         if not recipe:
             return jsonify({'error': 'Recipe not found'}), 404
-
+    
         if recipe.user_id != current_user.id:
             return jsonify({'error': 'Unauthorized to delete this recipe'}), 403
-
+    
         # Delete the uploaded file from the file system if it exists
         if recipe.filename:
             file_path = os.path.join(app.config['UPLOAD_FOLDER'], recipe.filename)
             if os.path.exists(file_path):
                 os.remove(file_path)
+            
+        # Delete each ingredient individually
+        for ingredient in ingredients:
+            db.session.delete(ingredient)
         
         db.session.delete(recipe)
-        db.session.delete(ingredients)
         db.session.commit()
-
-        return jsonify({'message': 'Recipe deleted successfully'}), 200  
+    
+        return jsonify({'message': 'Recipe deleted successfully'}), 200
     except:
         return jsonify({'error': 'An error occurred while deleting the recipe'}), 500 
 
